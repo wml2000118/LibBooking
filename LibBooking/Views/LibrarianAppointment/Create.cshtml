@@ -1,0 +1,134 @@
+﻿@model LibBooking.Models.LibrarianAppointmentViewModel
+
+@{
+    ViewData["Title"] = "Book a Consultation with Librarian";
+}
+
+<h1>Book a Consultation with Librarian</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>@Model.AppointmentDate.ToString("dddd, dd MMMM yyyy")</h2>
+            <input type="date" id="datePicker" value="@Model.AppointmentDate.ToString("yyyy-MM-dd")" class="form-control" />
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Librarian</th>
+                        @for (var hour = 8; hour < 18; hour++)
+                        {
+                            <th>@hour:00</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var librarian in Model.Librarians)
+                    {
+                        <tr>
+                            <td data-librarian-name="@librarian.Name">@librarian.Name<br /><small>@librarian.Campus</small></td>
+                            @for (var hour = 8; hour < 18; hour++)
+                            {
+                                var appointment = Model.Appointments.FirstOrDefault(a => a.LibrarianID == librarian.ID && a.StartTime.Hours == hour);
+                                if (appointment != null)
+                                {
+                                    <td class="reserved" title="Reserved"></td>
+                                }
+                                else
+                                {
+                                    <td class="available" data-librarian-id="@librarian.ID" data-hour="@hour"></td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 添加 Notes 输入框 -->
+    <div class="form-group mt-3">
+        <label for="inquiry">Your Inquiry/Notes:</label>
+        <input type="text" id="inquiry" name="Notes" class="form-control" placeholder="Enter your inquiry or notes here" />
+    </div>
+    <div class="form-group mt-3">
+        <label for="userEmail">Your Email:</label>
+        <input type="email" id="userEmail" class="form-control" placeholder="Enter your email here" required />
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <button id="submitBtn" class="btn btn-primary">Submit Appointment</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('datePicker').addEventListener('change', function () {
+            var selectedDate = this.value;
+            window.location.href = '@Url.Action("Create", "LibrarianAppointment")?date=' + selectedDate;
+        });
+
+        document.querySelectorAll('.available').forEach(cell => {
+            cell.addEventListener('click', function () {
+                document.querySelectorAll('.available').forEach(c => c.classList.remove('selected'));
+                if (!this.classList.contains('selected')) {
+                    this.classList.add('selected');
+                }
+            });
+        });
+
+        document.getElementById('submitBtn').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent default form submission behavior
+
+            var selectedCell = document.querySelector('.available.selected');
+            if (selectedCell) {
+                var selectedTime = selectedCell.getAttribute('data-hour');
+                var selectedLibrarianId = selectedCell.getAttribute('data-librarian-id');
+                var selectedLibrarianName = selectedCell.parentNode.querySelector('td[data-librarian-name]').getAttribute('data-librarian-name');
+                        var inquiryValue = document.getElementById('inquiry').value;
+                var selectedDate = document.getElementById('datePicker').value;
+                var userEmail = document.getElementById('userEmail').value;
+
+                        if (!inquiryValue) {
+                    alert('Please enter your inquiry or notes.');
+                    return;
+                }
+
+                // 构造URL参数
+                        var urlParams = new URLSearchParams({
+                    librarianId: selectedLibrarianId,
+                    librarianName: selectedLibrarianName,
+                    appointmentDate: selectedDate,
+                    startTime: selectedTime + ":00:00", // 修改为符合TimeSpan格式
+                    endTime: (parseInt(selectedTime) + 1) + ":00:00", // 修改为符合TimeSpan格式
+                            notes: inquiryValue,
+                    userEmail: userEmail
+                });
+
+                // 重定向到AppointmentConfirmed页面
+                window.location.href = '@Url.Action("AppointmentConfirmed", "LibrarianAppointment")?' + urlParams.toString();
+                    } else {
+                alert('Please select a time slot.');
+                    }
+                });
+    </script>
+    <style>
+        .available {
+            background-color: green !important;
+            cursor: pointer;
+        }
+
+            .available.selected {
+                background-color: yellow !important;
+            }
+
+        .reserved {
+            background-color: red !important;
+        }
+    </style>
+}

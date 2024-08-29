@@ -1,0 +1,84 @@
+﻿@model LibBooking.Models.LibrarianAppointmentViewModel
+
+@{
+    ViewData["Title"] = "Prepare Your Appointment";
+}
+
+<h1>Prepare Your Appointment</h1>
+
+<div class="container">
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert @(ViewBag.Message.Contains("成功") ? "alert-success" : "alert-danger")">
+            @ViewBag.Message
+        </div>
+    }
+
+    <!-- 使用 JavaScript 和 API 调用代替表单提交 -->
+    <div class="form-group">
+        <label for="librarianName">Librarian:</label>
+        <input type="text" id="librarianName" name="LibrarianName" value="@Model.LibrarianName" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="appointmentDate">Date:</label>
+        <input type="text" id="appointmentDate" name="AppointmentDate" value="@Model.AppointmentDate.ToString("yyyy-MM-dd")" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="time">Time:</label>
+        <input type="text" id="time" name="Time" value="@Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="inquiry">Your Inquiry:</label>
+        <input type="text" id="inquiry" name="Notes" value="@Model.Notes" class="form-control" placeholder="Enter your inquiry" />
+    </div>
+
+    <div class="form-group">
+        <label for="userEmail">Please enter your email:</label>
+        <input type="email" id="userEmail" name="UserEmail" class="form-control" value="@Model.UserEmail" required />
+    </div>
+
+    <button id="confirmButton" class="btn btn-primary">Confirm Appointment</button>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("confirmButton").addEventListener("click", async function (event) {
+            event.preventDefault(); // Prevent the default button behavior
+
+            const data = {
+                LibrarianID: @Model.LibrarianID,  // Add librarian ID to the payload
+                LibrarianName: document.getElementById("librarianName").value,
+                AppointmentDate: document.getElementById("appointmentDate").value,
+                StartTime: document.getElementById("time").value.split(" - ")[0] + ":00",
+                EndTime: document.getElementById("time").value.split(" - ")[1] + ":00",
+                Notes: document.getElementById("inquiry").value,
+                UserEmail: document.getElementById("userEmail").value
+            };
+
+            try {
+                const response = await fetch('/api/LibrarianAppointment/confirm', { // Correct API path
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message || "Appointment confirmed successfully!");
+                    // Optionally redirect or perform additional actions
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while processing your request.');
+            }
+        });
+
+    </script>
+}

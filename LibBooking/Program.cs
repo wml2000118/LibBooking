@@ -3,24 +3,30 @@ using LibBooking.Models;
 using LibBooking.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ÅäÖÃSMTPÉèÖÃ
+// é…ç½®SMTPè®¾ç½®
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
-// Ìí¼ÓEmailServiceµ½ÒÀÀµ×¢ÈëÈİÆ÷
+// æ·»åŠ EmailServiceåˆ°ä¾èµ–æ³¨å…¥å®¹å™¨
 builder.Services.AddTransient<IEmailService, EmailService>();
 
-// ÆäËû·şÎñÅäÖÃ
+// é…ç½®æ•°æ®åº“
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LibBookingContextConnection")));
+
+// é…ç½®IdentityæœåŠ¡
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()  // ç¡®ä¿è§’è‰²ç®¡ç†å¯ç”¨
+    .AddEntityFrameworkStores<ApplicationDbContext>();  // ç¡®ä¿ä½¿ç”¨ApplicationDbContextè€Œä¸æ˜¯LibBookingContext
 
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// ÅäÖÃHTTPÇëÇó¹ÜµÀ
+// é…ç½®HTTPè¯·æ±‚ç®¡é“
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -36,10 +42,15 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();  // ç¡®ä¿èº«ä»½éªŒè¯ä¸­é—´ä»¶åœ¨æˆæƒä¹‹å‰è¢«è°ƒç”¨
 app.UseAuthorization();
 
+// é…ç½®é»˜è®¤è·¯ç”±
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+app.MapRazorPages();
 
 app.Run();

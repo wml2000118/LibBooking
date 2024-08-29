@@ -1,0 +1,38 @@
+﻿@model IEnumerable<LibBooking.Models.LibrarianAppointment>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>Admin Dashboard</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Librarian</th>
+            <th>User Email</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Inquiry</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appointment in Model)
+        {
+            <tr>
+                <td>@appointment.Librarian.Name</td>
+                <td>@appointment.UserEmail</td>
+                <td>@appointment.AppointmentDate.ToString("yyyy-MM-dd")</td>
+                <td>@appointment.StartTime.ToString(@"hh\:mm")</td>
+                <td>@appointment.EndTime.ToString(@"hh\:mm")</td>
+                <td>@appointment.Notes</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@appointment.ID" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@appointment.ID" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this appointment?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

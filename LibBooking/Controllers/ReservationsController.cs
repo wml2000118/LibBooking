@@ -1,22 +1,58 @@
 ﻿using LibBooking.Data;
 using LibBooking.Models;
+using LibBooking.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LibBooking.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class ReservationsController : ControllerBase
+
+    public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
 
-        public ReservationsController(ApplicationDbContext context)
+        public ReservationsController(ApplicationDbContext context, IEmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
-        [HttpGet]
+        [HttpGet("index")]
+        public IActionResult Index(DateTime? date)
+        {
+            if (date == null)
+            {
+                date = DateTime.Today;
+            }
+
+            // 获取所有房间信息
+            var rooms = _context.Rooms.ToList();
+
+            // 获取指定日期的所有预定
+            var reservations = _context.Reservations
+                .Where(r => r.ReservationDate == date)
+                .ToList();
+
+            // 将房间信息和预定信息传递到视图
+            var model = new RoomReservationViewModel
+            {
+                Date = date.Value,
+                Rooms = rooms,
+                Reservations = reservations
+            };
+
+            return View(model);
+        }
+
+
+        // 获取预订信息的 API 端点
+        [HttpGet("get-reservations")]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations([FromQuery] int? roomID, [FromQuery] DateTime? start, [FromQuery] DateTime? end)
         {
             var query = _context.Reservations.AsQueryable();
@@ -34,8 +70,103 @@ namespace LibBooking.Controllers
             return await query.Include(r => r.Room).ToListAsync();
         }
 
+        // 提交时间方法
+        [HttpPost("submit-time")]
+        public IActionResult SubmitTime(int roomID, int time, DateTime reservationDate)
+        {
+            // 验证传入的数据
+            if (roomID <= 0 || time < 0 || time > 23)
+            {
+                return BadRequest(new { message = "Invalid input data." });
+            }
+
+            // 查找所选的房间
+            var selectedRoom = _context.Rooms.FirstOrDefault(r => r.ID == roomID);
+            if (selectedRoom == null)
+            {
+                return BadRequest(new { message = "Invalid Room ID." });
+            }
+
+            // 构建 EmailValidationViewModel 模型
+            var model = new EmailValidationViewModel
+            {
+                Room = selectedRoom.RoomName,
+                ID = roomID,
+                Time = time,
+                Date = reservationDate
+            };
+
+            // 返回视图，并将模型传递到视图中
+            return View("EmailValidation", model);
+        }
+
+
+
+
+        // 验证邮箱
+        [HttpPost("email-validation")]
+        public async Task<IActionResult> EmailValidation(EmailValidationViewModel model)
+        {
+            Console.WriteLine($"EmailValidation called with Room: {model.Room}, ID: {model.ID}, Time: {model.Time}");
+
+            var validDomains = new[] { "@student.weltec.ac.nz", "@weltec.ac.nz" };
+            var emailDomain = model.Email.Substring(model.Email.IndexOf("@"));
+
+            if (!validDomains.Contains(emailDomain))
+            {
+                ViewBag.Message = "提交失败，请使用学校邮箱（@student.weltec.ac.nz 或 @weltec.ac.nz）";
+                return View(model); // 返回当前视图，并显示错误消息
+            }
+
+            var selectedRoom = _context.Rooms.FirstOrDefault(r => r.ID == model.ID);
+            if (selectedRoom == null)
+            {
+                ViewBag.Message = "Invalid Room ID.";
+                return View(model); // 返回当前视图，并显示错误消息
+            }
+
+            try
+            {
+                int timeAsInt = int.Parse(model.Time.ToString());
+
+                var startTime = new TimeSpan(timeAsInt, 0, 0); // 使用转换后的整数来创建 TimeSpan
+                // 解析时间部分为整型
+                var endTime = startTime.Add(TimeSpan.FromHours(1));
+
+                var reservation = new Reservation
+                {
+                    RoomID = model.ID,
+                    ReservationDate = model.Date,
+                    StartTime = startTime,
+                    EndTime = endTime,
+                    Email = model.Email
+                };
+
+                _context.Reservations.Add(reservation);
+                await _context.SaveChangesAsync();
+                Console.WriteLine("Reservation saved to database.");
+
+                var message = $"You have successfully booked the room {model.Room} at {model.Time}:00 on {model.Date:yyyy-MM-dd}.";
+                await _emailService.SendEmailAsync(model.Email, "Room Booking Confirmation", message);
+                Console.WriteLine("Confirmation email sent.");
+
+                ViewBag.Message = "提交成功，预订确认邮件已发送到您的邮箱。";
+                return View(model); // 返回当前视图，并显示成功消息
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving reservation: {ex.Message}");
+                ViewBag.Message = $"保存预订信息时发生错误: {ex.Message}";
+                return View(model); // 返回当前视图，并显示错误消息
+            }
+        }
+
+
+
+
+        // 创建预订
         [HttpPost]
-        public async Task<ActionResult<Reservation>> CreateReservation(ReservationDto reservationDto)
+        public async Task<ActionResult<Reservation>> CreateReservation([FromBody] Reservation reservationDto)
         {
             var validEmailDomains = new[] { "@student.weltec.ac.nz", "@weltec.ac.nz" };
             var emailDomain = reservationDto.Email.Substring(reservationDto.Email.IndexOf("@"));
@@ -60,8 +191,9 @@ namespace LibBooking.Controllers
             return CreatedAtAction(nameof(GetReservations), new { id = reservation.ID }, reservation);
         }
 
+        // 更新预订
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateReservation(int id, Reservation reservation)
+        public async Task<IActionResult> UpdateReservation(int id, [FromBody] Reservation reservation)
         {
             if (id != reservation.ID)
             {
@@ -74,6 +206,7 @@ namespace LibBooking.Controllers
             return NoContent();
         }
 
+        // 删除预订
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
         {
@@ -88,5 +221,8 @@ namespace LibBooking.Controllers
 
             return NoContent();
         }
+
+
+
     }
 }

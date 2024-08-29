@@ -27,13 +27,20 @@
         public TimeSpan EndTime { get; set; }
     }
 
-    public class ReservationDto
+  
+    public class LibrarianAppointment
     {
-        public string Email { get; set; }
-        public int RoomID { get; set; }
-        public DateTime ReservationDate { get; set; }
+        public int ID { get; set; }
+        public int LibrarianID { get; set; }
+        public Librarian Librarian { get; set; }
+        public string UserEmail { get; set; }
+
+        public DateTime AppointmentDate { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
+        public string Notes { get; set; }  // Use this field for user's inquiry
     }
+
+
 
 }
