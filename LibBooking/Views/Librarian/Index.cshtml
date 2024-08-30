@@ -11,7 +11,8 @@
 @foreach (var librarian in Model)
 {
     <div class="librarian-info">
-        <img src="@librarian.ImageUrl" alt="@librarian.Name" />
+        @* <img src="@librarian.ImageUrl" alt="@librarian.Name" /> *@
+        <img src="@librarian.ImageUrl" alt="@librarian.Name" class="librarian-image" />
         <h3>@librarian.Name</h3>
         <p>@librarian.Campus</p>
         <p><a href="mailto:@librarian.Email">Email @librarian.Name</a></p>
@@ -19,9 +20,17 @@
     </div>
 }
 
-<div class="mt-4">
+@* <div class="mt-4">
     <!-- 添加导航到预约页面的按钮 -->
     <a href="@Url.Action("Create", "LibrarianAppointment")" class="btn btn-primary btn-lg">
+        Book a Librarian Appointment
+    </a>
+</div> *@
+
+<div class="clearfix"></div>
+
+<div class="book-appointment-container mt-4">
+    <a href="@Url.Action("Create", "LibrarianAppointment")" class="btn btn-primary btn-lg book-librarian-btn">
         Book a Librarian Appointment
     </a>
 </div>
@@ -33,16 +42,48 @@
 
     .librarian-info {
         margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .librarian-image {
+        max-width: 100px;
+        margin-bottom: 10px;
+        border-radius: 50%;
+    }
+
+    .clearfix::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .book-appointment-container {
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 40px; /* Ensure there is space above the footer */
+        padding-bottom: 20px; /* Extra padding to ensure no overlap with the footer */
+    }
+
+    .book-librarian-btn {
+        display: inline-block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        text-align: center;
+        background-color: #343a40;
+        color: #ffffff;
+        border-radius: 5px;
     }
 
     /* 适应不同屏幕大小的布局调整 */
-    .navbar a {
+/*     .navbar a {
         color: #333;
     }
 
         .navbar a:hover {
             color: #007bff;
-        }
+        } */
 
     .mt-4 {
         margin-top: 20px;
