@@ -34,9 +34,14 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" href="/api/LibrarianAppointment/admindashboard">Manage</a>
+                                    <a class="nav-link text-dark" href="/api/LibrarianAppointment/admindashboard">Manage Consultants</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Reservations" asp-action="Manage">Manage Reservations</a>
                                 </li>
                             }
+
+
                             <!-- 显示当前用户信息和登出按钮 -->
                             <li class="nav-item">
                                 <span class="nav-link text-dark">Hello, @User.Identity.Name!</span>

@@ -29,9 +29,10 @@
                 <td>@appointment.EndTime.ToString(@"hh\:mm")</td>
                 <td>@appointment.Notes</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@appointment.ID" class="btn btn-warning">Edit</a>
+                    <a asp-action="GetAppointment" asp-route-id="@appointment.ID" class="btn btn-warning">Edit</a>
                     <a asp-action="Delete" asp-route-id="@appointment.ID" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this appointment?');">Delete</a>
                 </td>
+
             </tr>
         }
     </tbody>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibBooking.Models
 {
@@ -31,8 +32,9 @@ namespace LibBooking.Models
         public string Notes { get; set; } // Use this field for user's inquiry
 
         // For drop-down lists of Librarians
-        public IEnumerable<Librarian> Librarians { get; set; } 
-
+    
+        public List<Librarian> Librarians { get; set; } = new List<Librarian>();
+        public SelectList LibrarianSelectList { get; set; }
         public DateTime Date { get; set; }
 
         public List<LibrarianAppointment> Appointments { get; set; }

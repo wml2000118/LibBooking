@@ -1,6 +1,7 @@
 ﻿using LibBooking.Data;
 using LibBooking.Models;
 using LibBooking.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -191,35 +192,106 @@ namespace LibBooking.Controllers
             return CreatedAtAction(nameof(GetReservations), new { id = reservation.ID }, reservation);
         }
 
-        // 更新预订
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateReservation(int id, [FromBody] Reservation reservation)
+        // GET: Manage reservations - Admin only
+        [HttpGet("manage")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Manage()
         {
-            if (id != reservation.ID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(reservation).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var reservations = await _context.Reservations.ToListAsync();
+            return View(reservations);
         }
 
-        // 删除预订
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReservation(int id)
+        // GET: Reservations/Edit/5
+        [HttpGet("edit/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var reservation = await _context.Reservations.FindAsync(id);
             if (reservation == null)
             {
                 return NotFound();
             }
+            return View(reservation);
+        }
 
+
+        // POST: Reservations/Edit/5
+        [HttpPost("edit/{id}")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Reservation reservation)
+        {
+            ModelState.Remove("Room");
+
+            if (id != reservation.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(reservation);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Manage)); // Redirect to Manage view after saving
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Reservations.Any(e => e.ID == reservation.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            // 如果 ModelState 无效，显示错误信息
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+            ViewBag.Errors = errors; // 可以显示在视图中，帮助诊断问题
+
+            return View(reservation); // 返回当前视图以显示错误信息
+        }
+
+
+        // GET: Reservations/Delete/5
+        [HttpGet("delete/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var reservation = await _context.Reservations
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            return View(reservation);
+        }
+
+        // POST: Reservations/Delete/5
+        [HttpPost("delete/{id}"), ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var reservation = await _context.Reservations.FindAsync(id);
             _context.Reservations.Remove(reservation);
             await _context.SaveChangesAsync();
-
-            return NoContent();
+            return RedirectToAction(nameof(Index));
         }
 
 

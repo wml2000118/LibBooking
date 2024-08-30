@@ -3,6 +3,7 @@ using LibBooking.Models;
 using LibBooking.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -122,16 +123,10 @@ namespace LibBooking.Controllers
             }
         }
 
-        // Edit appointment, admin only
         [HttpGet("edit/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> GetAppointment(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var appointment = await _context.LibrarianAppointments
                 .Include(a => a.Librarian)
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -140,6 +135,8 @@ namespace LibBooking.Controllers
             {
                 return NotFound();
             }
+
+            var librarians = await _context.Librarians.ToListAsync();
 
             var viewModel = new LibrarianAppointmentViewModel
             {
@@ -150,44 +147,60 @@ namespace LibBooking.Controllers
                 StartTime = appointment.StartTime,
                 EndTime = appointment.EndTime,
                 Notes = appointment.Notes,
-                Librarians = _context.Librarians.ToList()
+                Librarians = librarians,
+                LibrarianSelectList = new SelectList(librarians, "ID", "Name", appointment.LibrarianID)
             };
 
-            return View(viewModel);
+            return View("Edit", viewModel);
         }
-
         [HttpPost("edit/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, LibrarianAppointmentViewModel viewModel)
+        public async Task<IActionResult> UpdateAppointment(int id, [FromBody] LibrarianAppointmentViewModel viewModel)
         {
+            if (viewModel == null)
+            {
+                return BadRequest("Invalid appointment data.");
+            }
+
             if (id != viewModel.ID)
+            {
+                return BadRequest("ID mismatch.");
+            }
+
+            var appointment = await _context.LibrarianAppointments.FindAsync(id);
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            appointment.LibrarianID = viewModel.LibrarianID;
+            appointment.UserEmail = viewModel.UserEmail;
+            appointment.AppointmentDate = viewModel.AppointmentDate;
+            appointment.StartTime = viewModel.StartTime;
+            appointment.EndTime = viewModel.EndTime;
+            appointment.Notes = viewModel.Notes;
+
+            try
             {
-                var appointment = await _context.LibrarianAppointments.FindAsync(id);
-                if (appointment == null)
+                _context.Update(appointment);
+                await _context.SaveChangesAsync();
+                return Redirect("https://localhost:7092/api/LibrarianAppointment/admindashboard");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.LibrarianAppointments.Any(e => e.ID == viewModel.ID))
                 {
                     return NotFound();
                 }
-
-                appointment.LibrarianID = viewModel.LibrarianID;
-                appointment.UserEmail = viewModel.UserEmail;
-                appointment.AppointmentDate = viewModel.AppointmentDate;
-                appointment.StartTime = viewModel.StartTime;
-                appointment.EndTime = viewModel.EndTime;
-                appointment.Notes = viewModel.Notes;
-
-                _context.Update(appointment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(AdminDashboard));
+                else
+                {
+                    throw;
+                }
             }
-
-            viewModel.Librarians = _context.Librarians.ToList();
-            return View(viewModel);
         }
+
+
+
 
         // Delete appointment, admin only
         [HttpGet("delete/{id}")]
@@ -210,15 +223,23 @@ namespace LibBooking.Controllers
             return View(appointment);
         }
 
-        [HttpPost("delete/{id}")]
+
+        [HttpPost("delete/{id}"), ActionName("Delete")]
         [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var appointment = await _context.LibrarianAppointments.FindAsync(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
             _context.LibrarianAppointments.Remove(appointment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AdminDashboard));
         }
+
 
         [HttpGet("admindashboard")]
         [Authorize(Roles = "Admin")]

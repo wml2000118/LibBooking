@@ -6,11 +6,12 @@
 
 <h1>Edit Appointment</h1>
 
-<form asp-action="Edit">
-    <input type="hidden" asp-for="ID" />
+<div class="alert alert-danger" id="error-message" style="display: none;"></div>
+
+<form id="editForm">
     <div class="form-group">
         <label asp-for="LibrarianID" class="control-label"></label>
-        <select asp-for="LibrarianID" class="form-control" asp-items="@(new SelectList(Model.Librarians, "ID", "Name"))"></select>
+        <select asp-for="LibrarianID" class="form-control" asp-items="Model.LibrarianSelectList"></select>
     </div>
     <div class="form-group">
         <label asp-for="UserEmail" class="control-label"></label>
@@ -18,19 +19,58 @@
     </div>
     <div class="form-group">
         <label asp-for="AppointmentDate" class="control-label"></label>
-        <input asp-for="AppointmentDate" class="form-control" />
+        <input asp-for="AppointmentDate" class="form-control" type="date" />
     </div>
     <div class="form-group">
         <label asp-for="StartTime" class="control-label"></label>
-        <input asp-for="StartTime" class="form-control" />
+        <input asp-for="StartTime" class="form-control" type="time" />
     </div>
     <div class="form-group">
         <label asp-for="EndTime" class="control-label"></label>
-        <input asp-for="EndTime" class="form-control" />
+        <input asp-for="EndTime" class="form-control" type="time" />
     </div>
     <div class="form-group">
         <label asp-for="Notes" class="control-label"></label>
         <textarea asp-for="Notes" class="form-control"></textarea>
     </div>
+    <input type="hidden" asp-for="ID" />
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('editForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const appointment = {
+                id: document.querySelector('[name="ID"]').value,
+                librarianID: document.querySelector('[name="LibrarianID"]').value,
+                userEmail: document.querySelector('[name="UserEmail"]').value,
+                appointmentDate: document.querySelector('[name="AppointmentDate"]').value,
+                startTime: document.querySelector('[name="StartTime"]').value,
+                endTime: document.querySelector('[name="EndTime"]').value,
+                notes: document.querySelector('[name="Notes"]').value
+            };
+
+            fetch(`/api/LibrarianAppointment/edit/${appointment.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(appointment)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update appointment.');
+                    }
+                    window.location.href = '/api/LibrarianAppointment/admindashboard';
+                })
+                .catch(error => {
+                    console.error('Error updating appointment:', error);
+                    document.getElementById('error-message').innerText = 'Error updating appointment.';
+                    document.getElementById('error-message').style.display = 'block';
+                });
+        });
+    });
+</script>
