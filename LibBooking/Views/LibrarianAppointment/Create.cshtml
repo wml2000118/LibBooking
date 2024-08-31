@@ -61,7 +61,8 @@
 
     <div class="row mt-3">
         <div class="col-md-12">
-            <button id="submitBtn" class="btn btn-primary">Submit Appointment</button>
+            @* <button id="submitBtn" class="btn btn-primary">Submit Appointment</button> *@
+            <button id="submitBtn" class="btn btn-primary bg-gradient border-0 form-control submit-appointment-btn">Submit Appointment</button>
         </div>
     </div>
 </div>
@@ -129,6 +130,20 @@
 
         .reserved {
             background-color: red !important;
+        }
+
+        .container {
+            padding-bottom: 60px; /* Ensure there's enough space at the bottom */
+        }
+
+        .submit-appointment-btn {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            text-align: center;
+            background-color: #343a40;
+            color: #ffffff;
+            border-radius: 5px;
         }
     </style>
 }
