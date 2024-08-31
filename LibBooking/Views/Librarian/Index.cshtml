@@ -1,37 +1,50 @@
 ﻿@model IEnumerable<LibBooking.Models.Librarian>
 
-<div class="navbar navbar-light bg-light justify-content-end">
+@* <div class="navbar navbar-light bg-light justify-content-end">
     <a class="nav-link" href="/Identity/Account/Login">
         <i class="fas fa-user-circle fa-2x"></i> <!-- 使用 Font Awesome 图标 -->
     </a>
+</div> *@
+
+<div class="librarians-heading-container">
+    <h2>Librarians</h2>
 </div>
 
-<h2>Subject Librarians</h2>
+<div class="librarians-container">
 
 @foreach (var librarian in Model)
 {
     <div class="librarian-info">
         @* <img src="@librarian.ImageUrl" alt="@librarian.Name" /> *@
-        <img src="@librarian.ImageUrl" alt="@librarian.Name" class="librarian-image" />
-        <h3>@librarian.Name</h3>
-        <p>@librarian.Campus</p>
-        <p><a href="mailto:@librarian.Email">Email @librarian.Name</a></p>
-        <p><a href="@librarian.SubjectGuidesUrl">See Subject Guides</a></p>
+            <img src="@librarian.ImageUrl" class="librarian-image" alt="@librarian.Name" />
+            <div class="pl-1">
+                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@librarian.Name</p>
+                <p class="card-title text-warning text-center">by <b>@librarian.Campus</b></p>
+            </div>
+            
+@*             <h3>@librarian.Name</h3>
+        <p>@librarian.Campus</p> *@
+            <div class="pl-1">
+                <p class="text-dark text-opacity-75 text-center mb-0">
+                    <a href="mailto:@librarian.Email">Email @librarian.Name</a>
+                </p>
+            </div>
+        @* <p><a href="mailto:@librarian.Email">Email @librarian.Name</a></p> *@
+            <div class="pl-1">
+                <p class="text-dark text-opacity-75 text-center mb-0">
+                    <a href="@librarian.SubjectGuidesUrl">See Subject Guides</a>
+                </p>
+            </div>
+        @* <p><a href="@librarian.SubjectGuidesUrl">See Subject Guides</a></p> *@
     </div>
 }
-
-@* <div class="mt-4">
-    <!-- 添加导航到预约页面的按钮 -->
-    <a href="@Url.Action("Create", "LibrarianAppointment")" class="btn btn-primary btn-lg">
-        Book a Librarian Appointment
-    </a>
-</div> *@
+</div>
 
 <div class="clearfix"></div>
 
 <div class="book-appointment-container mt-4">
-    <a href="@Url.Action("Create", "LibrarianAppointment")" class="btn btn-primary btn-lg book-librarian-btn">
-        Book a Librarian Appointment
+    <a href="@Url.Action("Create", "LibrarianAppointment")" class="btn btn-primary bg-gradient border-0 form-control book-librarian-btn">
+        Book Appointment
     </a>
 </div>
 
@@ -40,7 +53,36 @@
         padding-right: 20px; /* 根据需要调整 */
     }
 
+    .librarians-heading-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .librarians-container {
+        display: flex;
+        justify-content: center; /*/space-around*/
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
     .librarian-info {
+        flex: 1 1 calc(30% - 20px); /* 4 items per row, adjust as necessary */
+        margin-bottom: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-align: center; /* Center the content */
+    }
+
+    .librarian-image {
+        width: 100px; /* Fixed width */
+        height: 100px; /* Fixed height */
+        margin-bottom: 10px;
+        border-radius: 50%; /* Makes the image circular */
+        object-fit: cover; /* Ensures the image covers the area without stretching */
+    }
+
+/*     .librarian-info {
         margin-bottom: 20px;
         padding: 10px;
         border: 1px solid #ddd;
@@ -57,7 +99,7 @@
         content: "";
         display: table;
         clear: both;
-    }
+    } */
 
     .book-appointment-container {
         text-align: center;
