@@ -4,6 +4,7 @@ using LibBooking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240831050105_updatedemailaddress")]
+    partial class updatedemailaddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +65,7 @@ namespace LibBooking.Migrations
                             Email = "judith.hall@wandw.ac.nz",
                             ImageUrl = "/images/judith.jpg",
                             Name = "Judith Hall",
-                            SubjectGuidesUrl = "https://whitireia.libguides.com/prf.php?id=c998c597-7bd7-11ed-9738-0ae0bf56cf20"
+                            SubjectGuidesUrl = "#"
                         },
                         new
                         {
@@ -71,7 +74,7 @@ namespace LibBooking.Migrations
                             Email = "sarah.knox@wandw.ac.nz",
                             ImageUrl = "/images/sarah.jpg",
                             Name = "Sarah Knox",
-                            SubjectGuidesUrl = "https://whitireia.libguides.com/prf.php?id=c9a972af-7bd7-11ed-9738-0ae0bf56cf20"
+                            SubjectGuidesUrl = "#"
                         },
                         new
                         {
@@ -80,7 +83,7 @@ namespace LibBooking.Migrations
                             Email = "madeleine.bowles@wandw.ac.nz",
                             ImageUrl = "/images/maddie.jpg",
                             Name = "Maddie Bowles",
-                            SubjectGuidesUrl = "https://whitireia.libguides.com/prf.php?id=c9a970c8-7bd7-11ed-9738-0ae0bf56cf20"
+                            SubjectGuidesUrl = "#"
                         });
                 });
 
@@ -258,7 +261,7 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "918429d0-15ea-4637-b28b-2a59a992fd64",
+                            Id = "f706edd6-532a-47b2-a2b5-df0ad1b00c2d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -356,17 +359,17 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "df380cff-abd7-4380-9395-29ab0fc2649e",
+                            Id = "f4bc5d8e-cc7b-4ddc-8ac6-7c57c614cc41",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7be84570-2b5c-4039-ad77-a0d9cb7776c4",
+                            ConcurrencyStamp = "5cae9b5b-f359-477b-b74f-15ae6e423caa",
                             Email = "admin@library.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LIBRARY.COM",
                             NormalizedUserName = "ADMIN@LIBRARY.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBly2PPjCarPCCgQC/bGG7v2euC/mqSxKc4pvkz2W5CUp/QrJ/XYN4sgj5L+/semRA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPcNb+fqqffgOyIC/LC/bF20O5jSpNzsdrGPr6M2q/erWs4ZugBja+mMqGg1Bbzw4g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cb7d83c4-b3d3-4be3-97ac-3bc4cbedc17e",
+                            SecurityStamp = "688172b4-b894-4393-b964-d47c01af36ab",
                             TwoFactorEnabled = false,
                             UserName = "admin@library.com"
                         });
@@ -438,8 +441,8 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "df380cff-abd7-4380-9395-29ab0fc2649e",
-                            RoleId = "918429d0-15ea-4637-b28b-2a59a992fd64"
+                            UserId = "f4bc5d8e-cc7b-4ddc-8ac6-7c57c614cc41",
+                            RoleId = "f706edd6-532a-47b2-a2b5-df0ad1b00c2d"
                         });
                 });
 

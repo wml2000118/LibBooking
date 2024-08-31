@@ -31,9 +31,9 @@ namespace LibBooking.Data
 
 
             builder.Entity<Librarian>().HasData(
-           new Librarian { ID = 1, Name = "Judith Hall", Campus = "Porirua Campus", Email = "judith@library.com", ImageUrl = "/images/judith.jpg", SubjectGuidesUrl = "#" },
-           new Librarian { ID = 2, Name = "Sarah Knox", Campus = "Te Auaha Campus", Email = "sarah@library.com", ImageUrl = "/images/sarah.jpg", SubjectGuidesUrl = "#" },
-           new Librarian { ID = 3, Name = "Maddie Bowles", Campus = "Petone Campus", Email = "maddie@library.com", ImageUrl = "/images/maddie.jpg", SubjectGuidesUrl = "#" }
+           new Librarian { ID = 1, Name = "Judith Hall", Campus = "Porirua Campus", Email = "judith.hall@wandw.ac.nz", ImageUrl = "/images/judith.jpg", SubjectGuidesUrl = "https://whitireia.libguides.com/prf.php?id=c998c597-7bd7-11ed-9738-0ae0bf56cf20" },
+           new Librarian { ID = 2, Name = "Sarah Knox", Campus = "Te Auaha Campus", Email = "sarah.knox@wandw.ac.nz", ImageUrl = "/images/sarah.jpg", SubjectGuidesUrl = "https://whitireia.libguides.com/prf.php?id=c9a972af-7bd7-11ed-9738-0ae0bf56cf20" },
+           new Librarian { ID = 3, Name = "Maddie Bowles", Campus = "Petone Campus", Email = "madeleine.bowles@wandw.ac.nz", ImageUrl = "/images/maddie.jpg", SubjectGuidesUrl = "https://whitireia.libguides.com/prf.php?id=c9a970c8-7bd7-11ed-9738-0ae0bf56cf20" }
             );
             // Seed admin user
             var adminUser = new IdentityUser
