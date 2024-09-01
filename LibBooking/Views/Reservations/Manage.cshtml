@@ -4,9 +4,17 @@
     ViewData["Title"] = "Manage Reservations";
 }
 
-<h1>Manage Reservations</h1>
+<div class="card-header bg-secondary bg-gradient ml-0 py-3">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2 class="text-white py-2">Manage Reservations</h2>
+        </div>
+    </div>
+</div>
 
-<table class="table table-striped">
+@* <h1>Manage Reservations</h1> *@
+
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>ID</th>
@@ -29,12 +37,16 @@
                 <td>@reservation.EndTime</td>
                 <td>@reservation.Email</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@reservation.ID" class="btn btn-warning btn-sm">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@reservation.ID" class="btn btn-danger btn-sm">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@reservation.ID" class="btn btn-primary mx-2">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@reservation.ID" class="btn btn-danger mx-2">
+                        <i class="bi bi-trash-fill"></i> Delete
+                    </a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+@* <a asp-action="Index" class="btn btn-secondary">Back to List</a> *@<!-- Don't think we need this' -->

@@ -4,18 +4,27 @@
     ViewData["Title"] = "Book a Consultation with Librarian";
 }
 
-<h1>Book a Consultation with Librarian</h1>
+<div class="card-header bg-secondary bg-gradient ml-0 py-3">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2 class="text-white py-2">Book a Consultation with Librarian</h2>
+        </div>
+    </div>
+</div>
+
+@* <h1>Book a Consultation with Librarian</h1> *@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <h2>@Model.AppointmentDate.ToString("dddd, dd MMMM yyyy")</h2>
+        <div class="col-12 text-center">
+            @* <h2>@Model.AppointmentDate.ToString("dddd, dd MMMM yyyy")</h2> *@
+            <h2 class="text-dark py-2">@Model.AppointmentDate.ToString("dddd, dd MMMM yyyy")</h2>
             <input type="date" id="datePicker" value="@Model.AppointmentDate.ToString("yyyy-MM-dd")" class="form-control" />
         </div>
     </div>
     <div class="row mt-3">
         <div class="col-md-12">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Librarian</th>
@@ -61,7 +70,6 @@
 
     <div class="row mt-3">
         <div class="col-md-12">
-            @* <button id="submitBtn" class="btn btn-primary">Submit Appointment</button> *@
             <button id="submitBtn" class="btn btn-primary bg-gradient border-0 form-control submit-appointment-btn">Submit Appointment</button>
         </div>
     </div>
