@@ -4,6 +4,7 @@ using LibBooking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240901055145_updatedLibraryViewModel")]
+    partial class updatedLibraryViewModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,15 +261,7 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-                            Id = "918429d0-15ea-4637-b28b-2a59a992fd64",
-=======
                             Id = "97688feb-9e4f-4962-83cf-dcaa9bb087fe",
->>>>>>> Stashed changes
-=======
-                            Id = "97688feb-9e4f-4962-83cf-dcaa9bb087fe",
->>>>>>> a43821dd56e1679e39ea1264e68e3a2350407b5d
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -364,41 +359,17 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-                            Id = "df380cff-abd7-4380-9395-29ab0fc2649e",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "7be84570-2b5c-4039-ad77-a0d9cb7776c4",
-=======
                             Id = "6fb284e0-91ae-457c-aedc-ec0742c3d421",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "115037b2-a9e5-44a7-8150-2f6d71b2e155",
->>>>>>> Stashed changes
-=======
-                            Id = "6fb284e0-91ae-457c-aedc-ec0742c3d421",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "115037b2-a9e5-44a7-8150-2f6d71b2e155",
->>>>>>> a43821dd56e1679e39ea1264e68e3a2350407b5d
                             Email = "admin@library.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LIBRARY.COM",
                             NormalizedUserName = "ADMIN@LIBRARY.COM",
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-                            PasswordHash = "AQAAAAIAAYagAAAAEBly2PPjCarPCCgQC/bGG7v2euC/mqSxKc4pvkz2W5CUp/QrJ/XYN4sgj5L+/semRA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "cb7d83c4-b3d3-4be3-97ac-3bc4cbedc17e",
-=======
                             PasswordHash = "AQAAAAIAAYagAAAAEL32Y1EqgaMmaJDICu6vLpoYiuYCrGRhQGI6NTW0SxlfKI2nL8B5Hb095XX0Vpv6kQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "96bd421e-1b55-47d1-b18b-f17ef4987ad8",
->>>>>>> Stashed changes
-=======
-                            PasswordHash = "AQAAAAIAAYagAAAAEL32Y1EqgaMmaJDICu6vLpoYiuYCrGRhQGI6NTW0SxlfKI2nL8B5Hb095XX0Vpv6kQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "96bd421e-1b55-47d1-b18b-f17ef4987ad8",
->>>>>>> a43821dd56e1679e39ea1264e68e3a2350407b5d
                             TwoFactorEnabled = false,
                             UserName = "admin@library.com"
                         });
@@ -470,18 +441,8 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-                            UserId = "df380cff-abd7-4380-9395-29ab0fc2649e",
-                            RoleId = "918429d0-15ea-4637-b28b-2a59a992fd64"
-=======
                             UserId = "6fb284e0-91ae-457c-aedc-ec0742c3d421",
                             RoleId = "97688feb-9e4f-4962-83cf-dcaa9bb087fe"
->>>>>>> Stashed changes
-=======
-                            UserId = "6fb284e0-91ae-457c-aedc-ec0742c3d421",
-                            RoleId = "97688feb-9e4f-4962-83cf-dcaa9bb087fe"
->>>>>>> a43821dd56e1679e39ea1264e68e3a2350407b5d
                         });
                 });
 

@@ -8,10 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 using static System.Runtime.InteropServices.JavaScript.JSType;
 >>>>>>> Stashed changes
+=======
+using static System.Runtime.InteropServices.JavaScript.JSType;
+>>>>>>> a43821dd56e1679e39ea1264e68e3a2350407b5d
 
 namespace LibBooking.Controllers
 {
@@ -156,9 +160,12 @@ namespace LibBooking.Controllers
                 Console.WriteLine("Confirmation email sent.");
 
                 ViewBag.Message = "提交成功，预订确认邮件已发送到您的邮箱。";
+<<<<<<< HEAD
 <<<<<<< Updated upstream
                 return View(model); // 返回当前视图，并显示成功消息
 =======
+=======
+>>>>>>> a43821dd56e1679e39ea1264e68e3a2350407b5d
                 /*return View(model);*/ // 返回当前视图，并显示成功消息
                 return View("Index", new RoomReservationViewModel
                 {
@@ -167,7 +174,10 @@ namespace LibBooking.Controllers
                     Reservations = _context.Reservations.Where(r => r.ReservationDate == DateTime.Today).ToList()
                 });
 
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> a43821dd56e1679e39ea1264e68e3a2350407b5d
             }
             catch (Exception ex)
             {

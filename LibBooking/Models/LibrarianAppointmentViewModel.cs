@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace LibBooking.Models
@@ -34,6 +35,7 @@ namespace LibBooking.Models
         // For drop-down lists of Librarians
     
         public List<Librarian> Librarians { get; set; } = new List<Librarian>();
+        [ValidateNever] //Need fixing Menglong. Not sure if this is a temporary fix
         public SelectList LibrarianSelectList { get; set; }
         public DateTime Date { get; set; }
 
