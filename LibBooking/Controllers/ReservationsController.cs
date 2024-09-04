@@ -8,6 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+<<<<<<< Updated upstream
+=======
+using static System.Runtime.InteropServices.JavaScript.JSType;
+>>>>>>> Stashed changes
 
 namespace LibBooking.Controllers
 {
@@ -152,7 +156,18 @@ namespace LibBooking.Controllers
                 Console.WriteLine("Confirmation email sent.");
 
                 ViewBag.Message = "提交成功，预订确认邮件已发送到您的邮箱。";
+<<<<<<< Updated upstream
                 return View(model); // 返回当前视图，并显示成功消息
+=======
+                /*return View(model);*/ // 返回当前视图，并显示成功消息
+                return View("Index", new RoomReservationViewModel
+                {
+                    Date = DateTime.Today,
+                    Rooms = _context.Rooms.ToList(),
+                    Reservations = _context.Reservations.Where(r => r.ReservationDate == DateTime.Today).ToList()
+                });
+
+>>>>>>> Stashed changes
             }
             catch (Exception ex)
             {
