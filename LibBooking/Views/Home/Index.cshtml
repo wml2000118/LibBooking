@@ -3,15 +3,32 @@
 }
 
 <div class="container">
-    <h1>Welcome to the Library Room Booking System</h1>
+        <div class="card-header bg-primary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Welcome to the Library Booking System</h2>
+            </div>
+        </div>
+    </div>
 
-    <h2 class="text-success mt-4">Book a study room</h2>
+            <div class="card-header ml-0 py-2">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-success py-2">Book a study room</h2>
+            </div>
+        </div>
+    </div>
+
+   @*  <h1>Welcome to the Library Room Booking System</h1> *@
+
+@*     <h2 class="text-success mt-4">Book a study room</h2> *@
 
     <div class="row mt-4">
         <div class="col-md-8">
             <p>Bookable group study rooms are available within our library for students from all faculties.</p>
 
-            <table class="table table-bordered text-center">
+           @*  <table class="table table-bordered text-center"> *@
+                <table class="table table-bordered table-striped">
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">Room</th>
@@ -39,7 +56,8 @@
             </table>
 
             <p>See which study rooms are available for booking.</p>
-            <a href="@Url.Action("Index", "Reservations")" class="btn btn-primary btn-lg">Check Availability</a>
+            <a href="@Url.Action("Index", "Reservations")" class="btn btn-primary btn-lg btn-block">Check Availability</a>
+
 
             <h2 class="text-success mt-4">Condition of Use</h2>
             <p>
@@ -51,11 +69,21 @@
             <h2 class="text-success mt-4">Extend your booking</h2>
             <p>If there are no subsequent bookings, you may extend your session as long as you want. Please check the availability and make another booking.</p>
 
-            <div class="col-md-16">
-                <h3 class="text-success mt-4">Contact the Librarians</h3>
+            <div class="col-12 col-md-6 mt-4 pb-5">
+                <h3 class="text-success  py-2">Contact the Librarians</h3>
                 <p>If you have any questions, please contact our librarians.</p>
-                <a href="@Url.Action("Index", "Librarian")" class="btn btn-success btn-md">Librarian Info</a>
+                   <a href="@Url.Action("Index", "Librarian")" class="btn btn-primary btn-lg btn-block">Librarian Info</a>
             </div>
         </div>
     </div>
 </div>
+<style>
+    .btn-block {
+        display: block;
+        width: 100%;
+        max-width: 200px; /* Adjust as necessary */
+        margin: 1 auto;
+        margin-bottom: 20px;
+        padding: 10px 20px;
+    }
+</style>

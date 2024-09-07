@@ -302,7 +302,39 @@ namespace LibBooking.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet("manage-reservations")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ManageReservations()
+        {
+            return View();  // This loads the Manage Reservations page
+        }
 
+        #region API CALLS
+
+        [HttpGet("get-all-reservations")]
+        public IActionResult GetAllReservations()
+        {
+            var reservationList = _context.Reservations
+                .Include(r => r.Room)  // Assuming Reservation has a Room relation
+                .ToList();
+            return Json(new { data = reservationList });
+        }
+
+        [HttpDelete("delete-reservation/{id}")]
+        public IActionResult DeleteReservation(int id)
+        {
+            var reservation = _context.Reservations.FirstOrDefault(r => r.ID == id);
+            if (reservation == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+
+            _context.Reservations.Remove(reservation);
+            _context.SaveChanges();
+            return Json(new { success = true, message = "Delete successful" });
+        }
+
+        #endregion
 
     }
 }

@@ -14,7 +14,9 @@
 
 @* <h1>Manage Reservations</h1> *@
 
-<table class="table table-bordered table-striped">
+@* <table class="table table-bordered table-striped"> *@
+<table id="reservationsTable" class="table table-bordered table-striped" style="width:100%">
+
     <thead>
         <tr>
             <th>ID</th>
@@ -50,3 +52,8 @@
 </table>
 
 @* <a asp-action="Index" class="btn btn-secondary">Back to List</a> *@<!-- Don't think we need this' -->
+
+                            @section Scripts {
+            <script src="~/js/manage.js"></script>
+
+        }
