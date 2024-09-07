@@ -116,15 +116,15 @@ namespace LibBooking.Controllers
 
             if (!validDomains.Contains(emailDomain))
             {
-                ViewBag.Message = "提交失败，请使用学校邮箱（@student.weltec.ac.nz 或 @weltec.ac.nz）";
-                return View(model); // 返回当前视图，并显示错误消息
+                TempData["error"] = "Please use a valid university email address (@student.weltec.ac.nz or @weltec.ac.nz).";
+                return View(model);
             }
 
             var selectedRoom = _context.Rooms.FirstOrDefault(r => r.ID == model.ID);
             if (selectedRoom == null)
             {
-                ViewBag.Message = "Invalid Room ID.";
-                return View(model); // 返回当前视图，并显示错误消息
+                TempData["error"] = "Invalid Room ID.";
+                return View(model);
             }
 
             try
@@ -146,6 +146,8 @@ namespace LibBooking.Controllers
 
                 _context.Reservations.Add(reservation);
                 await _context.SaveChangesAsync();
+                TempData["success"] = $"Booking confirmed! Room {model.Room} at {model.Time}:00 on {model.Date:yyyy-MM-dd}.";
+
                 Console.WriteLine("Reservation saved to database.");
 
                 var message = $"You have successfully booked the room {model.Room} at {model.Time}:00 on {model.Date:yyyy-MM-dd}.";
@@ -165,7 +167,8 @@ namespace LibBooking.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Error saving reservation: {ex.Message}");
-                ViewBag.Message = $"保存预订信息时发生错误: {ex.Message}";
+                TempData["error"] = $"An error occurred while processing your booking: {ex.Message}";
+
                 return View(model); // 返回当前视图，并显示错误消息
             }
         }
@@ -238,6 +241,7 @@ namespace LibBooking.Controllers
 
             if (id != reservation.ID)
             {
+                TempData["error"] = "Reservation not found.";
                 return NotFound();
             }
 
@@ -247,12 +251,14 @@ namespace LibBooking.Controllers
                 {
                     _context.Update(reservation);
                     await _context.SaveChangesAsync();
+                    TempData["success"] = "Reservation updated successfully.";
                     return RedirectToAction(nameof(Manage)); // Redirect to Manage view after saving
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!_context.Reservations.Any(e => e.ID == reservation.ID))
                     {
+                        TempData["error"] = "Reservation not found.";
                         return NotFound();
                     }
                     else
@@ -262,13 +268,11 @@ namespace LibBooking.Controllers
                 }
             }
 
-            // 如果 ModelState 无效，显示错误信息
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-            ViewBag.Errors = errors; // 可以显示在视图中，帮助诊断问题
-
-            return View(reservation); // 返回当前视图以显示错误信息
+            ViewBag.Errors = errors;
+            TempData["error"] = "Error updating reservation.";
+            return View(reservation);
         }
-
 
         // GET: Reservations/Delete/5
         [HttpGet("delete/{id}")]
