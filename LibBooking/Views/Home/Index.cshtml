@@ -4,19 +4,58 @@
 
 <div class="container">
     <h1>Welcome to the Library Room Booking System</h1>
-    <p>Please choose one of the options below:</p>
+
+    <h2 class="text-success mt-4">Book a study room</h2>
 
     <div class="row mt-4">
-        <div class="col-md-6">
-            <h3>Check Room Availability</h3>
+        <div class="col-md-8">
+            <p>Bookable group study rooms are available within our library for students from all faculties.</p>
+
+            <table class="table table-bordered text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Room</th>
+                        <th scope="col">Capacity</th>
+                        <th scope="col">Facilities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Level 2, Learning commons, Meeting room 2 - glass slided</th>
+                        <td>5</td>
+                        <td>wifi, power, whiteboard, 5 computers, projector</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Level 2, Learning commons, Meeting Room 3</th>
+                        <td>16</td>
+                        <td>wifi, power, whiteboard, 16 computers, projector</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Level 2, Learning commons, Meeting Room 5, Student Connection Room</th>
+                        <td>2</td>
+                        <td>wifi, power, whiteboard, 2 computers</td>
+                    </tr>
+                </tbody>
+            </table>
+
             <p>See which study rooms are available for booking.</p>
             <a href="@Url.Action("Index", "Reservations")" class="btn btn-primary btn-lg">Check Availability</a>
 
-        </div>
-        <div class="col-md-6">
-            <h3>Contact the Librarians</h3>
-            <p>If you have any questions, you can contact our librarians.</p>
-            <a href="@Url.Action("Index", "Librarian")" class="btn btn-secondary btn-lg">Librarian Info</a>
+            <h2 class="text-success mt-4">Condition of Use</h2>
+            <p>
+                Only current students are eligible to use the group study rooms.<br>
+                Bookings are limited to a two-hour duration.<br>
+                To cancel the booking, please email us.
+            </p>
+
+            <h2 class="text-success mt-4">Extend your booking</h2>
+            <p>If there are no subsequent bookings, you may extend your session as long as you want. Please check the availability and make another booking.</p>
+
+            <div class="col-md-16">
+                <h3 class="text-success mt-4">Contact the Librarians</h3>
+                <p>If you have any questions, please contact our librarians.</p>
+                <a href="@Url.Action("Index", "Librarian")" class="btn btn-success btn-md">Librarian Info</a>
+            </div>
         </div>
     </div>
 </div>

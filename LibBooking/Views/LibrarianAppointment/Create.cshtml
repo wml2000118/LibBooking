@@ -84,10 +84,6 @@
         document.getElementById('datePicker').addEventListener('change', function () {
             var selectedDate = this.value;
             window.location.href = '@Url.Action("Create", "LibrarianAppointment")?date=' + selectedDate;
-            // window.location.href = '@Url.Action("Create", "LibrarianAppointment")' + '?date=' + selectedDate;
-            // var createUrl = '@Url.Action("Create", "LibrarianAppointment")';
-            // window.location.href = createUrl + '?date=' + selectedDate;
-
 
         });
 
