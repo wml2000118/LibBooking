@@ -23,7 +23,7 @@ function loadDataTable() {
                         <a onClick=Delete('/api/reservations/delete-reservation/${data}') class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
                         </div>`
                 },
-                "width": "20%"
+                "width": "25%"
             }
         ]
     });

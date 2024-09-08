@@ -1,6 +1,18 @@
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.divider-text:before,
+.divider-text:after {
+    color: white;
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #555;
+    margin: auto 0.25rem;
+    box-shadow: 0 -2px;
+}
+
+
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -15,8 +27,84 @@ a.navbar-brand {
     border-color: #1861ac;
 }
 
-html {
-    font-size: 14px;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.container {
+    flex-grow: 1;
+    padding-bottom: 60px; /* Adjust this value based on your footer height */
+    /*overflow: auto;*/ /* Ensures scrolling */
+    overflow-y: auto; /* Allow vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+footer {
+    margin-top: auto;
+    background-color: #192E2F;  Adjust footer background color if needed 
+    padding: 10px 0;
+    color: white;  Ensure text color contrasts well 
+    text-align: center;
+}
+
+/*footer {
+    margin-top: auto;
+    background-color: #192E2F;*/ /* Adjust footer background color if needed */
+    /*padding: 10px 0;
+    color: white;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    height: 60px;*/ /* Ensure height matches padding-bottom above */
+/*}*/
+
+table {
+    width: 100%;
+}
+
+/*#reservationsTable {
+    margin-bottom: 60px;*/ /* Adjust this based on your footer height */
+/*    width: 100%;*/
+    /*max-width: 2000px;*/ /* Optional: Set a max width for the table */
+/*}*/
+
+#reservationsTable {
+    margin-bottom: 60px; /* Adjust based on footer height */
+    width: 100%; /* Full width without overflow */
+    max-width: 1200px; /* Set a comfortable max width for readability */
+    margin-left: auto;
+    margin-right: auto; /* Center the table on the page */
+    border-collapse: collapse; /* Neat border styling */
+}
+
+/*table th, table td {
+    padding: 10px;
+    text-align: center;*/  /*Align text for better readability */
+    /*border: 1px solid #ddd;*/  /*Add table border */
+/*}*/
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Ensure borders are shown properly */
+}
+
+table, th, td {
+    border: 1px solid #ddd; /* Light grey for a softer border */
+}
+
+
+th, td {
+    padding: 10px; /* Add some padding for better readability */
+    text-align: left; /* Align text to the left for headers and cells */
 }
 
 @media (min-width: 768px) {
@@ -41,13 +129,6 @@ button.accept-policy {
     font-size: 1rem;
     line-height: inherit;
 }
-
-html {
-    position: relative;
-    min-height: 100%;
-}
-
-
 
 .badge {
     background-color: rgba(189, 116, 24, 0.6);
@@ -78,7 +159,7 @@ html {
     background-color: #3A595C !important;
 }
 
-bg-success {
+.bg-success {
     background-color: #4b7147 !important;
 }
 
