@@ -42,9 +42,7 @@ body {
 .container {
     flex-grow: 1;
     padding-bottom: 60px; /* Adjust this value based on your footer height */
-    /*overflow: auto;*/ /* Ensures scrolling */
-    overflow-y: auto; /* Allow vertical scrolling */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow: auto; /* Ensures scrolling */
 }
 
 footer {
