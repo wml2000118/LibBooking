@@ -8,7 +8,7 @@
 
 <div class="alert alert-danger" id="error-message" style="display: none;"></div>
 
-<form id="editForm">
+<form asp-action="UpdateAppointment" asp-route-id="@Model.ID" method="post">
     <div class="form-group">
         <label asp-for="LibrarianID" class="control-label"></label>
         <select asp-for="LibrarianID" class="form-control" asp-items="Model.LibrarianSelectList"></select>
@@ -23,11 +23,11 @@
     </div>
     <div class="form-group">
         <label asp-for="StartTime" class="control-label"></label>
-        <input asp-for="StartTime" class="form-control" type="time" />
+        <input asp-for="StartTime" class="form-control timepicker" type="time" />
     </div>
     <div class="form-group">
         <label asp-for="EndTime" class="control-label"></label>
-        <input asp-for="EndTime" class="form-control" type="time" />
+        <input asp-for="EndTime" class="form-control timepicker" type="time" />
     </div>
     <div class="form-group">
         <label asp-for="Notes" class="control-label"></label>
@@ -37,40 +37,19 @@
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('editForm');
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-            const appointment = {
-                id: document.querySelector('[name="ID"]').value,
-                librarianID: document.querySelector('[name="LibrarianID"]').value,
-                userEmail: document.querySelector('[name="UserEmail"]').value,
-                appointmentDate: document.querySelector('[name="AppointmentDate"]').value,
-                startTime: document.querySelector('[name="StartTime"]').value,
-                endTime: document.querySelector('[name="EndTime"]').value,
-                notes: document.querySelector('[name="Notes"]').value
-            };
-
-            fetch(`/api/LibrarianAppointment/edit/${appointment.id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(appointment)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to update appointment.');
-                    }
-                    window.location.href = '/api/LibrarianAppointment/admindashboard';
-                })
-                .catch(error => {
-                    console.error('Error updating appointment:', error);
-                    document.getElementById('error-message').innerText = 'Error updating appointment.';
-                    document.getElementById('error-message').style.display = 'block';
-                });
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Flatpickr for time selection
+            flatpickr(".timepicker", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: false // Set to false for 12-hour format, true for 24-hour format
+            });
         });
-    });
-</script>
+    </script>
+}
