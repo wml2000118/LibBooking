@@ -53,6 +53,14 @@ footer {
     text-align: center;
 }
 
+td {
+    word-wrap: break-word !important;
+    max-width: 300px !important;
+    white-space: normal !important;
+}
+
+
+
 /*footer {
     margin-top: auto;
     background-color: #192E2F;*/ /* Adjust footer background color if needed */

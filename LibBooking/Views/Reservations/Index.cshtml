@@ -130,6 +130,14 @@
             }
         });
 
+        // Initialize Flatpickr for the date picker
+        flatpickr("#datePicker", {
+            dateFormat: "Y-m-d",  // Adjust format as needed
+            altInput: true,       // To show a better-looking input field
+            altFormat: "F j, Y",  // Format for the alt input
+            minDate: "today",     // Set minimum date to today
+        });
+
         // Displaying messages from TempData using SweetAlert2
         document.addEventListener("DOMContentLoaded", function () {
             const message = '@TempData["Message"]';
@@ -195,4 +203,3 @@
         }
     </style>
 }
-
