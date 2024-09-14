@@ -27,7 +27,7 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Room</th>
+                        <th>Room Details</th>
                         @for (var hour = 8; hour < 18; hour++)
                         {
                             <th>@hour:00</th>
@@ -38,7 +38,14 @@
                     @foreach (var room in Model.Rooms)
                     {
                         <tr>
-                            <td data-room-name="@room.RoomName">@room.RoomName<br /><small>@room.Description</small></td>
+                            <td data-room-name="@room.RoomName">
+                                <strong>@room.RoomName</strong>
+                                <br />
+                                Room Capacity - <span>@room.Capacity</span>
+                                <br />
+                                Room Facilities - <span>@room.Facilities</span>
+                            </td>
+
                             @for (var hour = 8; hour < 18; hour++)
                             {
                                 var reservation = Model.Reservations.FirstOrDefault(r => r.RoomID == room.ID && r.StartTime.Hours == hour);
@@ -145,6 +152,16 @@
             background-color: #343a40;
             color: #ffffff;
             border-radius: 5px;
+        }
+
+        td[data-room-name] {
+            line-height: 1.2; /* Reduce line height for compact text */
+        }
+
+        td small {
+            display: inline-block; /* Ensure each element takes less space */
+            margin-right: 5px; /* Adds some spacing between elements */
+            color: #6c757d; /* Lighter color for smaller text */
         }
     </style>
 }

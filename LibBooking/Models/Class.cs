@@ -1,4 +1,6 @@
-﻿namespace LibBooking.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LibBooking.Models
 {
     public class User
     {
@@ -10,10 +12,12 @@
 
     public class Room
     {
+        //[Key]
         public int ID { get; set; }
         public string RoomName { get; set; }
+        [Display(Name = "Room Capacity")]
         public int Capacity { get; set; }
-        public string Description { get; set; }
+        public string Facilities { get; set; }
     }
 
     public class Reservation

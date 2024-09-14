@@ -63,10 +63,9 @@ namespace LibBooking.Data
 
             // Seed data for rooms (existing seed data)
             builder.Entity<Room>().HasData(
-                new Room { ID = 1, RoomName = "Room A", Capacity = 10, Description = "Description for Room A" },
-                new Room { ID = 2, RoomName = "Room B", Capacity = 20, Description = "Description for Room B" },
-                new Room { ID = 3, RoomName = "Room C", Capacity = 30, Description = "Description for Room C" },
-                new Room { ID = 4, RoomName = "Room D", Capacity = 40, Description = "Description for Room D" }
+                new Room { ID = 1, RoomName = "Meeting room 2 - glass slided", Capacity = 5, Facilities = "wifi, power, whiteboard, 5 computers, projector" },
+                new Room { ID = 2, RoomName = "Meeting Room 3", Capacity = 16, Facilities = "wifi, power, whiteboard, 16 computers, projector" },
+                new Room { ID = 3, RoomName = "Meeting Room 5, Student Connection Room", Capacity = 2, Facilities = "wifi, power, whiteboard, 2 computers" }
             );
         }
 

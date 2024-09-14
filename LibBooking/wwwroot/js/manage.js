@@ -7,7 +7,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#reservationsTable').DataTable({
         "ajax": { url: '/api/reservations/get-all-reservations' },
-/*        "ajax": { url: '/api/reservations/get-all-reservations', dataSrc: 'data' },*/
+        /*        "ajax": { url: '/api/reservations/get-all-reservations', dataSrc: 'data' },*/
         "columns": [
             { data: 'id', "width": "10%" },
             { data: 'roomID', "width": "10%" },
@@ -21,7 +21,7 @@ function loadDataTable() {
                     return `<div class="w-75 btn-group" role="group">
                         <a href="/api/reservations/edit/${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>
                         <a onClick=Delete('/api/reservations/delete-reservation/${data}') class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
-                        </div>`
+                        </div>`;
                 },
                 "width": "25%"
             }
@@ -47,7 +47,7 @@ function Delete(url) {
                     dataTable.ajax.reload();
                     toastr.success(data.message);
                 }
-            })
+            });
         }
     });
 }
