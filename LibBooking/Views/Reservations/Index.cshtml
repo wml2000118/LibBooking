@@ -87,7 +87,7 @@
                 var selectedTime = selectedCell.getAttribute('data-hour');
                 var selectedRoomId = selectedCell.getAttribute('data-room-id');
 
-                // 创建一个隐藏的表单
+                // Creating a hidden form
                 var form = document.createElement('form');
                 form.method = 'post';
                 form.action = '/api/Reservations/submit-time';
@@ -113,11 +113,41 @@
                 document.body.appendChild(form);
                 form.submit();
             } else {
-                alert('Please select a time slot.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Please select a time slot.',
+                    showConfirmButton: true,
+                    timer: 3000
+                });
             }
         });
 
+        // Displaying messages from TempData using SweetAlert2
+        document.addEventListener("DOMContentLoaded", function () {
+            const message = '@TempData["Message"]';
+            const messageType = '@TempData["MessageType"]';
 
+            if (message) {
+                if (messageType === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: message,
+                        showConfirmButton: true,
+                        timer: 3000
+                    });
+                } else if (messageType === "error") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message,
+                        showConfirmButton: true,
+                        timer: 3000
+                    });
+                }
+            }
+        });
     </script>
     <style>
         .available {
@@ -125,9 +155,9 @@
             cursor: pointer;
         }
 
-         .available.selected {
+            .available.selected {
                 background-color: yellow !important;
-         }
+            }
 
         .reserved {
             background-color: red !important;
@@ -148,3 +178,4 @@
         }
     </style>
 }
+

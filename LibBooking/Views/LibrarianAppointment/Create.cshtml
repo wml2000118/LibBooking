@@ -84,7 +84,6 @@
         document.getElementById('datePicker').addEventListener('change', function () {
             var selectedDate = this.value;
             window.location.href = '@Url.Action("Create", "LibrarianAppointment")?date=' + selectedDate;
-
         });
 
         document.querySelectorAll('.available').forEach(cell => {
@@ -116,13 +115,25 @@
 
             // Check if an inquiry type is selected
             if (!selectedInquiryType) {
-                alert('Please select an inquiry type.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Please select an inquiry type.',
+                    showConfirmButton: true,
+                    timer: 3000
+                });
                 return;
             }
 
             // Check if "Other" is selected and an inquiry value is provided
             if (selectedInquiryType === 'Other' && !otherInquiryValue) {
-                alert('Please specify your inquiry.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Please specify your inquiry.',
+                    showConfirmButton: true,
+                    timer: 3000
+                });
                 return;
             }
 
@@ -132,20 +143,52 @@
                 var selectedLibrarianName = selectedCell.parentNode.querySelector('td[data-librarian-name]').getAttribute('data-librarian-name');
                 var selectedDate = document.getElementById('datePicker').value;
 
-                // 构造URL参数
+                // Construct URL parameters
                 var urlParams = new URLSearchParams({
                     librarianId: selectedLibrarianId,
                     librarianName: selectedLibrarianName,
                     appointmentDate: selectedDate,
-                    startTime: selectedTime + ":00:00", // 修改为符合TimeSpan格式
-                    endTime: (parseInt(selectedTime) + 1) + ":00:00", // 修改为符合TimeSpan格式
+                    startTime: selectedTime + ":00:00", // Match TimeSpan format
+                    endTime: (parseInt(selectedTime) + 1) + ":00:00", // Match TimeSpan format
                     notes: inquiryValue,
                 });
 
-                // 重定向到AppointmentConfirmed页面
+                // Redirect to the AppointmentConfirmed page
                 window.location.href = '@Url.Action("AppointmentConfirmed", "LibrarianAppointment")?' + urlParams.toString();
             } else {
-                alert('Please select a time slot.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Please select a time slot.',
+                    showConfirmButton: true,
+                    timer: 3000
+                });
+            }
+        });
+
+        // Displaying messages from TempData using SweetAlert2
+        document.addEventListener("DOMContentLoaded", function () {
+            const message = '@TempData["Message"]';
+            const messageType = '@TempData["MessageType"]';
+
+            if (message) {
+                if (messageType === "success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: message,
+                        showConfirmButton: true,
+                        timer: 3000
+                    });
+                } else if (messageType === "error") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message,
+                        showConfirmButton: true,
+                        timer: 3000
+                    });
+                }
             }
         });
     </script>
@@ -156,9 +199,9 @@
             cursor: pointer;
         }
 
-        .available.selected {
-            background-color: yellow !important;
-        }
+            .available.selected {
+                background-color: yellow !important;
+            }
 
         .reserved {
             background-color: red !important;

@@ -115,7 +115,8 @@ namespace LibBooking.Controllers
                 var message = $"You have successfully booked an appointment with {model.LibrarianName} at {model.StartTime} on {model.AppointmentDate:yyyy-MM-dd}.";
                 await _emailService.SendEmailAsync(model.UserEmail, "Appointment Confirmation", message);
 
-                return Ok(new { message = "Appointment confirmed successfully!" });
+                // 返回一个指示成功的 JSON 响应
+                return Ok(new { message = "Appointment confirmed successfully!", redirectUrl = Url.Action("Create") });
             }
             catch (Exception ex)
             {
@@ -155,7 +156,7 @@ namespace LibBooking.Controllers
         }
         [HttpPost("edit/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAppointment(int id, [FromBody] LibrarianAppointmentViewModel viewModel)
+        public async Task<IActionResult> UpdateAppointment(int id, [FromForm] LibrarianAppointmentViewModel viewModel)
         {
             if (viewModel == null)
             {
@@ -164,7 +165,15 @@ namespace LibBooking.Controllers
 
             if (id != viewModel.ID)
             {
-                return BadRequest("ID mismatch.");
+                ModelState.AddModelError("", "ID mismatch.");
+                return View("Edit", viewModel);
+            }
+
+            // Ensure EndTime is after StartTime
+            if (viewModel.StartTime >= viewModel.EndTime)
+            {
+                ModelState.AddModelError("", "End time must be after start time.");
+                return View("Edit", viewModel);
             }
 
             var appointment = await _context.LibrarianAppointments.FindAsync(id);
@@ -176,15 +185,15 @@ namespace LibBooking.Controllers
             appointment.LibrarianID = viewModel.LibrarianID;
             appointment.UserEmail = viewModel.UserEmail;
             appointment.AppointmentDate = viewModel.AppointmentDate;
-            appointment.StartTime = viewModel.StartTime;
-            appointment.EndTime = viewModel.EndTime;
+            appointment.StartTime = viewModel.StartTime; // Direct assignment
+            appointment.EndTime = viewModel.EndTime; // Direct assignment
             appointment.Notes = viewModel.Notes;
 
             try
             {
                 _context.Update(appointment);
                 await _context.SaveChangesAsync();
-                return Redirect("https://localhost:7092/api/LibrarianAppointment/admindashboard");
+                return RedirectToAction("AdminDashboard");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -198,7 +207,6 @@ namespace LibBooking.Controllers
                 }
             }
         }
-
 
 
 

@@ -146,7 +146,9 @@ namespace LibBooking.Controllers
 
                 _context.Reservations.Add(reservation);
                 await _context.SaveChangesAsync();
-                TempData["success"] = $"Booking confirmed! Room {model.Room} at {model.Time}:00 on {model.Date:yyyy-MM-dd}.";
+                //TempData["success"] = $"Booking confirmed! Room {model.Room} at {model.Time}:00 on {model.Date:yyyy-MM-dd}.";
+                TempData["Message"] = "success";
+                TempData["MessageType"] = "success"; // 或 "error" 根据情况设置
 
                 Console.WriteLine("Reservation saved to database.");
 
