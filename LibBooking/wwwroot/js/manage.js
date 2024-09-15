@@ -8,10 +8,13 @@ function loadDataTable() {
     dataTable = $('#reservationsTable').DataTable({
         "ajax": { url: '/api/reservations/get-all-reservations' },
         "columns": [
-            { data: 'id', "width": "10%" },
-            { data: 'roomID', "width": "10%" },
-            { data: 'room.roomName', "width": "15%" },  // Room name
-            { data: 'reservationDate', "width": "15%" },
+            { data: 'room.roomName', "width": "15%" },
+            {
+                data: 'reservationDate', "width": "15%",
+                render: function (data) {
+                    return moment(data).format('YYYY-MM-DD'); // Use moment.js to format date
+                }
+            },
             { data: 'startTime', "width": "10%" },
             { data: 'endTime', "width": "10%" },
             { data: 'email', "width": "15%" },
