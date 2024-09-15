@@ -205,12 +205,22 @@ namespace LibBooking.Controllers
             return CreatedAtAction(nameof(GetReservations), new { id = reservation.ID }, reservation);
         }
 
-        // GET: Manage reservations - Admin only
+        //// GET: Manage reservations - Admin only
+        //[HttpGet("manage")]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Manage()
+        //{
+        //    var reservations = await _context.Reservations.ToListAsync();
+        //    return View(reservations);
+        //}
+
         [HttpGet("manage")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Manage()
         {
-            var reservations = await _context.Reservations.ToListAsync();
+            var reservations = await _context.Reservations
+                .Include(r => r.Room) // Include Room data
+                .ToListAsync();
             return View(reservations);
         }
 

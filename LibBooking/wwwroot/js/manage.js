@@ -7,13 +7,13 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#reservationsTable').DataTable({
         "ajax": { url: '/api/reservations/get-all-reservations' },
-        /*        "ajax": { url: '/api/reservations/get-all-reservations', dataSrc: 'data' },*/
         "columns": [
             { data: 'id', "width": "10%" },
             { data: 'roomID', "width": "10%" },
+            { data: 'room.roomName', "width": "15%" },  // Room name
             { data: 'reservationDate', "width": "15%" },
-            { data: 'startTime', "width": "15%" },
-            { data: 'endTime', "width": "15%" },
+            { data: 'startTime', "width": "10%" },
+            { data: 'endTime', "width": "10%" },
             { data: 'email', "width": "15%" },
             {
                 data: 'id',
@@ -21,7 +21,7 @@ function loadDataTable() {
                     return `<div class="w-75 btn-group" role="group">
                         <a href="/api/reservations/edit/${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>
                         <a onClick=Delete('/api/reservations/delete-reservation/${data}') class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
-                        </div>`;
+                    </div>`;
                 },
                 "width": "25%"
             }
