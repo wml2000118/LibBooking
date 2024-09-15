@@ -17,8 +17,10 @@
 <div class="container">
     <div class="row">
         <div class="col-12 text-center">
-            @* <h2>@Model.Date.ToString("dddd, dd MMMM yyyy")</h2> *@
             <h2 class="text-dark py-2">@Model.Date.ToString("dddd, dd MMMM yyyy")</h2>
+            <div class="col-12">
+                <p class="date-text"> You can select a different date to check room availability.</p>
+            </div>
             <input type="date" id="datePicker" value="@Model.Date.ToString("yyyy-MM-dd")" class="form-control" />
         </div>
     </div>
@@ -200,6 +202,12 @@
             display: inline-block; /* Ensure each element takes less space */
             margin-right: 5px; /* Adds some spacing between elements */
             color: #6c757d; /* Lighter color for smaller text */
+        }
+
+        .date-text {
+            text-align: left;
+            color: black;
+            font-weight: bold;
         }
     </style>
 }

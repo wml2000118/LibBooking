@@ -1,64 +1,69 @@
 ﻿@using System.Text.Json
-
 @model LibBooking.Models.EmailValidationViewModel
 
 @{
-    ViewData["Title"] = "Email Validation";
+    ViewData["Title"] = "Review Booking";
 }
 
-<h1>Email Validation</h1>
-
-@if (!string.IsNullOrEmpty(ViewBag.Message))
-{
-    <div class="alert @(ViewBag.Message.Contains("成功") ? "alert-success" : "alert-danger")">
-        @ViewBag.Message
+<div class="card mt-4 shadow-lg">
+    <div class="card-header bg-secondary text-white text-center py-3">
+        <h2>Review Booking</h2>
     </div>
-}
+    <div class="card-body">
+        @if (!string.IsNullOrEmpty(ViewBag.Message))
+        {
+            <div class="alert @(ViewBag.Message.Contains("成功") ? "alert-success" : "alert-danger")">
+                @ViewBag.Message
+            </div>
+        }
 
-<div class="container">
-    <form asp-action="EmailValidation" method="post">
-        <input type="hidden" id="id" name="ID" value="@Model.ID" />
-        <div class="form-group">
-            <label for="room">Room:</label>
-            <input type="text" id="room" name="room" value="@Model.Room" class="form-control" readonly />
-        </div>
-        <div class="form-group">
-            <label for="time">Time:</label>
-            <input type="number" id="time" name="Time" value="@Model.Time" class="form-control" readonly />
-        </div>
-        <div class="form-group">
-            <label for="date">Date:</label>
-            <input type="text" id="date" name="date" value="@Model.Date.ToString("yyyy-MM-dd")" class="form-control" readonly />
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="@Model.Email" class="form-control" required />
-        </div>
-        <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
-    </form>
+        <form asp-action="EmailValidation" method="post">
+            <input type="hidden" id="id" name="ID" value="@Model.ID" />
+
+            <div class="form-group mb-3">
+                <label for="room" class="font-weight-bold">Room:</label>
+                <input type="text" id="room" name="room" value="@Model.Room" class="form-control bg-light" readonly />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="time" class="font-weight-bold">Time:</label>
+                <input type="number" id="time" name="Time" value="@Model.Time" class="form-control bg-light" readonly />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="date" class="font-weight-bold">Date:</label>
+                <input type="text" id="date" name="date" value="@Model.Date.ToString("yyyy-MM-dd")" class="form-control bg-light" readonly />
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="email" class="font-weight-bold">Email:</label>
+                <input type="email" id="email" name="email" value="@Model.Email" class="form-control" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2">Submit</button>
+        </form>
+    </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- 引入 SweetAlert2 -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // 检查 TempData 中是否有消息并显示弹窗
     document.addEventListener("DOMContentLoaded", function () {
-        // 使用 JsonSerializer.Serialize 来正确处理消息内容
         const message = @Html.Raw(JsonSerializer.Serialize(TempData["Message"]));
         const messageType = '@TempData["MessageType"]';
 
         if (messageType) {
-            // 使用 SweetAlert2 显示成功或错误消息
             if (messageType === "success") {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Success',  // 只显示“Success”
+                    title: 'Success',
                     showConfirmButton: true,
                     timer: 3000
                 });
             } else if (messageType === "error") {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error',  // 只显示“Error”
+                    title: 'Error',
                     showConfirmButton: true,
                     timer: 3000
                 });
@@ -67,4 +72,14 @@
     });
 </script>
 
+<style>
+    .form-control[readonly] {
+        background-color: #f8f9fa;
+        cursor: not-allowed;
+    }
 
+    label {
+        font-weight: bold;
+    }
+
+</style>

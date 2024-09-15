@@ -4,6 +4,7 @@ using LibBooking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240914235036_afterMerge2")]
+    partial class afterMerge2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,7 +254,7 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4f3cdafc-c491-4034-a034-a464124a5dfb",
+                            Id = "be7fc195-4523-4c23-b36c-5b1a30cfda15",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -349,17 +352,17 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "68ed1ac7-4d5a-43a5-956a-3a3e0a2ee639",
+                            Id = "67afef06-6c35-4ce2-8703-dc447c0e8552",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0b6d8608-7d8d-41e7-bb1b-ac52893f9049",
+                            ConcurrencyStamp = "5312d5f2-9f73-4a4f-8691-c1956e900b52",
                             Email = "admin@library.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LIBRARY.COM",
                             NormalizedUserName = "ADMIN@LIBRARY.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPt5qLfcfanDXqWzk6LPAz165JTM8/QmIry+R6U80hnJ+ffbcUBoxaAH0CYRG0hX5A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBzJBhFsNgRQZR1HQ0yZhA6NkMDd0W5wPhXhN/TMpJo81yFTrLy3AsFYVa0M+3quBQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "12ef8ce9-0767-4cd4-9f6a-031e9d8ddf72",
+                            SecurityStamp = "a0b81ea1-9486-493a-abd3-8e25c78c1f37",
                             TwoFactorEnabled = false,
                             UserName = "admin@library.com"
                         });
@@ -431,8 +434,8 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "68ed1ac7-4d5a-43a5-956a-3a3e0a2ee639",
-                            RoleId = "4f3cdafc-c491-4034-a034-a464124a5dfb"
+                            UserId = "67afef06-6c35-4ce2-8703-dc447c0e8552",
+                            RoleId = "be7fc195-4523-4c23-b36c-5b1a30cfda15"
                         });
                 });
 

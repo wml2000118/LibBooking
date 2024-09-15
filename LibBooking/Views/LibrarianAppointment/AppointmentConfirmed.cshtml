@@ -1,130 +1,139 @@
-﻿@model LibBooking.Models.LibrarianAppointmentViewModel
+﻿@using System.Text.Json
+@model LibBooking.Models.LibrarianAppointmentViewModel
 
 @{
-    ViewData["Title"] = "Prepare Your Appointment";
+    ViewData["Title"] = "Review Appointment";
 }
 
-<h1>Prepare Your Appointment</h1>
-
-<div class="container">
-    @if (!string.IsNullOrEmpty(ViewBag.Message))
-    {
-        <div class="alert @(ViewBag.Message.Contains("成功") ? "alert-success" : "alert-danger")">
-            @ViewBag.Message
-        </div>
-    }
-
-    <!-- 使用 JavaScript 和 API 调用代替表单提交 -->
-    <div class="form-group">
-        <label for="librarianName">Librarian:</label>
-        <input type="text" id="librarianName" name="LibrarianName" value="@Model.LibrarianName" class="form-control" readonly />
+<div class="card mt-4 shadow-lg">
+    <div class="card-header bg-secondary text-white text-center py-3">
+        <h2>Review Appointment</h2>
     </div>
+    <div class="card-body">
+        @if (!string.IsNullOrEmpty(ViewBag.Message))
+        {
+            <div class="alert @(ViewBag.Message.Contains("成功") ? "alert-success" : "alert-danger")">
+                @ViewBag.Message
+            </div>
+        }
 
-    <div class="form-group">
-        <label for="appointmentDate">Date:</label>
-        <input type="text" id="appointmentDate" name="AppointmentDate" value="@Model.AppointmentDate.ToString("yyyy-MM-dd")" class="form-control" readonly />
+        <form id="appointmentForm">
+            <div class="form-group mb-3">
+                <label for="librarianName" class="font-weight-bold">Librarian:</label>
+                <input type="text" id="librarianName" name="LibrarianName" value="@Model.LibrarianName" class="form-control bg-light" readonly />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="appointmentDate" class="font-weight-bold">Date:</label>
+                <input type="text" id="appointmentDate" name="AppointmentDate" value="@Model.AppointmentDate.ToString("yyyy-MM-dd")" class="form-control bg-light" readonly />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="time" class="font-weight-bold">Time:</label>
+                <input type="text" id="time" name="Time" value="@Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")" class="form-control bg-light" readonly />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="inquiry" class="font-weight-bold">Your Inquiry:</label>
+                <input type="text" id="inquiry" name="Notes" value="@Model.Notes" class="form-control" placeholder="Enter your inquiry" readonly />
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="userEmail" class="font-weight-bold">Please enter your email:</label>
+                <input type="email" id="userEmail" name="UserEmail" class="form-control" value="@Model.UserEmail" required />
+            </div>
+
+            <button id="confirmButton" class="btn btn-primary w-100 py-2">Confirm Appointment</button>
+        </form>
     </div>
-
-    <div class="form-group">
-        <label for="time">Time:</label>
-        <input type="text" id="time" name="Time" value="@Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")" class="form-control" readonly />
-    </div>
-
-    <div class="form-group">
-        <label for="inquiry">Your Inquiry:</label>
-        <input type="text" id="inquiry" name="Notes" value="@Model.Notes" class="form-control" placeholder="Enter your inquiry" />
-    </div>
-
-    <div class="form-group">
-        <label for="userEmail">Please enter your email:</label>
-        <input type="email" id="userEmail" name="UserEmail" class="form-control" value="@Model.UserEmail" required />
-    </div>
-
-    <button id="confirmButton" class="btn btn-primary">Confirm Appointment</button>
 </div>
 
-@section Scripts {
-    <script>
-        // 监听确认按钮点击事件
-        document.getElementById("confirmButton").addEventListener("click", async function (event) {
-            event.preventDefault(); // 阻止默认的按钮行为
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-            const data = {
-                LibrarianID: @Model.LibrarianID,  // Librarian ID
-                LibrarianName: document.getElementById("librarianName").value,
-                AppointmentDate: document.getElementById("appointmentDate").value,
-                StartTime: document.getElementById("time").value.split(" - ")[0] + ":00",
-                EndTime: document.getElementById("time").value.split(" - ")[1] + ":00",
-                Notes: document.getElementById("inquiry").value,
-                UserEmail: document.getElementById("userEmail").value
-            };
+<script>
+    document.getElementById("confirmButton").addEventListener("click", async function (event) {
+        event.preventDefault();
 
-            try {
-                const response = await fetch('/api/LibrarianAppointment/confirm', { // 确保 API 路径正确
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
+        const data = {
+            LibrarianID: @Model.LibrarianID,
+            LibrarianName: document.getElementById("librarianName").value,
+            AppointmentDate: document.getElementById("appointmentDate").value,
+            StartTime: document.getElementById("time").value.split(" - ")[0] + ":00",
+            EndTime: document.getElementById("time").value.split(" - ")[1] + ":00",
+            Notes: document.getElementById("inquiry").value,
+            UserEmail: document.getElementById("userEmail").value
+        };
+
+        try {
+            const response = await fetch('/api/LibrarianAppointment/confirm', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Appointment Confirmed!',
+                    showConfirmButton: true,
+                    timer: 3000
+                }).then(() => {
+                    window.location.href = '/api/LibrarianAppointment/create';
                 });
-
-                const result = await response.json();
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '预约成功',
-                        text: result.message || "预约已成功确认！",
-                        showConfirmButton: true,
-                        timer: 3000
-                    }).then(() => {
-                        // 确认后跳转到创建页面或其他合适页面
-                        window.location.href = '/api/LibrarianAppointment/create';
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: '错误',
-                        text: '错误: ' + result.message,
-                        showConfirmButton: true,
-                        timer: 3000
-                    });
-                }
-            } catch (error) {
-                console.error('Error:', error);
+            } else {
                 Swal.fire({
                     icon: 'error',
-                    title: '错误',
-                    text: '处理请求时发生错误。',
+                    title: 'Error',
+                    text: result.message || "There was an error with your appointment.",
                     showConfirmButton: true,
                     timer: 3000
                 });
             }
-        });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: "An error occurred while processing your request.",
+                showConfirmButton: true,
+                timer: 3000
+            });
+        }
+    });
 
-        // 使用 SweetAlert2 显示 TempData 消息
-        document.addEventListener("DOMContentLoaded", function () {
-            const message = '@TempData["Message"]';
-            const messageType = '@TempData["MessageType"]';
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = @Html.Raw(JsonSerializer.Serialize(TempData["Message"]));
+        const messageType = '@TempData["MessageType"]';
 
-            if (message) {
-                if (messageType === "success") {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '成功',
-                        text: message,
-                        showConfirmButton: true,
-                        timer: 3000
-                    });
-                } else if (messageType === "error") {
-                    Swal.fire({
-                        icon: 'error',
-                        title: '错误',
-                        text: message,
-                        showConfirmButton: true,
-                        timer: 3000
-                    });
-                }
+        if (messageType) {
+            if (messageType === "success") {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    showConfirmButton: true,
+                    timer: 3000
+                });
+            } else if (messageType === "error") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    showConfirmButton: true,
+                    timer: 3000
+                });
             }
-        });
-    </script>
-}
+        }
+    });
+</script>
+
+<style>
+    .form-control[readonly] {
+        background-color: #f8f9fa;
+        cursor: not-allowed;
+    }
+
+    label {
+        font-weight: bold;
+    }
+</style>
