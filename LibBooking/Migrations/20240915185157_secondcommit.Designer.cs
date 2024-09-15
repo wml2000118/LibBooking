@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240831050105_updatedemailaddress")]
-    partial class updatedemailaddress
+    [Migration("20240915185157_secondcommit")]
+    partial class secondcommit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,7 +65,7 @@ namespace LibBooking.Migrations
                             Email = "judith.hall@wandw.ac.nz",
                             ImageUrl = "/images/judith.jpg",
                             Name = "Judith Hall",
-                            SubjectGuidesUrl = "#"
+                            SubjectGuidesUrl = "https://whitireia.libguides.com/prf.php?id=c998c597-7bd7-11ed-9738-0ae0bf56cf20"
                         },
                         new
                         {
@@ -74,7 +74,7 @@ namespace LibBooking.Migrations
                             Email = "sarah.knox@wandw.ac.nz",
                             ImageUrl = "/images/sarah.jpg",
                             Name = "Sarah Knox",
-                            SubjectGuidesUrl = "#"
+                            SubjectGuidesUrl = "https://whitireia.libguides.com/prf.php?id=c9a972af-7bd7-11ed-9738-0ae0bf56cf20"
                         },
                         new
                         {
@@ -83,7 +83,7 @@ namespace LibBooking.Migrations
                             Email = "madeleine.bowles@wandw.ac.nz",
                             ImageUrl = "/images/maddie.jpg",
                             Name = "Maddie Bowles",
-                            SubjectGuidesUrl = "#"
+                            SubjectGuidesUrl = "https://whitireia.libguides.com/prf.php?id=c9a970c8-7bd7-11ed-9738-0ae0bf56cf20"
                         });
                 });
 
@@ -164,7 +164,7 @@ namespace LibBooking.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Facilities")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -180,30 +180,23 @@ namespace LibBooking.Migrations
                         new
                         {
                             ID = 1,
-                            Capacity = 10,
-                            Description = "Description for Room A",
-                            RoomName = "Room A"
+                            Capacity = 5,
+                            Facilities = "wifi, power, whiteboard, 5 computers, projector",
+                            RoomName = "Meeting room 2 - glass slided"
                         },
                         new
                         {
                             ID = 2,
-                            Capacity = 20,
-                            Description = "Description for Room B",
-                            RoomName = "Room B"
+                            Capacity = 16,
+                            Facilities = "wifi, power, whiteboard, 16 computers, projector",
+                            RoomName = "Meeting Room 3"
                         },
                         new
                         {
                             ID = 3,
-                            Capacity = 30,
-                            Description = "Description for Room C",
-                            RoomName = "Room C"
-                        },
-                        new
-                        {
-                            ID = 4,
-                            Capacity = 40,
-                            Description = "Description for Room D",
-                            RoomName = "Room D"
+                            Capacity = 2,
+                            Facilities = "wifi, power, whiteboard, 2 computers",
+                            RoomName = "Meeting Room 5, Student Connection Room"
                         });
                 });
 
@@ -261,7 +254,7 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f706edd6-532a-47b2-a2b5-df0ad1b00c2d",
+                            Id = "5c9ad288-9b2e-4fea-a750-e1573cab0e75",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -359,17 +352,17 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f4bc5d8e-cc7b-4ddc-8ac6-7c57c614cc41",
+                            Id = "a8acfc43-1fc0-4552-b789-4ac8e9252c82",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5cae9b5b-f359-477b-b74f-15ae6e423caa",
+                            ConcurrencyStamp = "19d32d2c-6d55-4beb-9b67-27c90e7829bd",
                             Email = "admin@library.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LIBRARY.COM",
                             NormalizedUserName = "ADMIN@LIBRARY.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPcNb+fqqffgOyIC/LC/bF20O5jSpNzsdrGPr6M2q/erWs4ZugBja+mMqGg1Bbzw4g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHHCI5KkemSlHdaAW42AC2lrYmEVQr5mvb0rX0KkrbbhLihVOCClIPYs6dcEAkCkgQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "688172b4-b894-4393-b964-d47c01af36ab",
+                            SecurityStamp = "5553b983-a8fe-41fd-92e7-b7ec0202da0c",
                             TwoFactorEnabled = false,
                             UserName = "admin@library.com"
                         });
@@ -441,8 +434,8 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "f4bc5d8e-cc7b-4ddc-8ac6-7c57c614cc41",
-                            RoleId = "f706edd6-532a-47b2-a2b5-df0ad1b00c2d"
+                            UserId = "a8acfc43-1fc0-4552-b789-4ac8e9252c82",
+                            RoleId = "5c9ad288-9b2e-4fea-a750-e1573cab0e75"
                         });
                 });
 

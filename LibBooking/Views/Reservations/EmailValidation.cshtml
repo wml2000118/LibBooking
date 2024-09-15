@@ -27,7 +27,8 @@
 
             <div class="form-group mb-3">
                 <label for="time" class="font-weight-bold">Time:</label>
-                <input type="number" id="time" name="Time" value="@Model.Time.ToString("F2")" class="form-control bg-light" readonly />
+                @* <input type="number" id="time" name="Time" value="@Model.Time.ToString("F2")" class="form-control bg-light" readonly /> *@
+                <input type="number" id="time" name="Time" value="@Model.Time" class="form-control" readonly />
 
             </div>
 

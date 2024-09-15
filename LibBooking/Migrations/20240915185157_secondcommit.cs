@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LibBooking.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLibrarianSeedData : Migration
+    public partial class secondcommit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,7 +77,7 @@ namespace LibBooking.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoomName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Facilities = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,11 +213,9 @@ namespace LibBooking.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LibrarianID = table.Column<int>(type: "int", nullable: false),
                     UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserID = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Enquiry = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -257,38 +255,37 @@ namespace LibBooking.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "4aae7cb3-09ea-4193-95de-76b87950d171", null, "Admin", "ADMIN" });
+                values: new object[] { "5c9ad288-9b2e-4fea-a750-e1573cab0e75", null, "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "fd869dd3-0dab-4750-8f5d-afe2add6bcb7", 0, "9218142e-1110-4de4-b724-c4262eb03635", "admin@library.com", true, false, null, "ADMIN@LIBRARY.COM", "ADMIN@LIBRARY.COM", "AQAAAAIAAYagAAAAEEY/4LEWWFXgFkohJQPMc2QMvYd+A6LnEqRVKy9lnsxoj2CaJ2RGHnT44yOou8wYIQ==", null, false, "f907ea69-28eb-4576-b96e-cc73ec49e6ed", false, "admin@library.com" });
+                values: new object[] { "a8acfc43-1fc0-4552-b789-4ac8e9252c82", 0, "19d32d2c-6d55-4beb-9b67-27c90e7829bd", "admin@library.com", true, false, null, "ADMIN@LIBRARY.COM", "ADMIN@LIBRARY.COM", "AQAAAAIAAYagAAAAEHHCI5KkemSlHdaAW42AC2lrYmEVQr5mvb0rX0KkrbbhLihVOCClIPYs6dcEAkCkgQ==", null, false, "5553b983-a8fe-41fd-92e7-b7ec0202da0c", false, "admin@library.com" });
 
             migrationBuilder.InsertData(
                 table: "Librarians",
                 columns: new[] { "ID", "Campus", "Email", "ImageUrl", "Name", "SubjectGuidesUrl" },
                 values: new object[,]
                 {
-                    { 1, "Porirua Campus", "judith@library.com", "/images/judith.jpg", "Judith Hall", "#" },
-                    { 2, "Te Auaha Campus", "sarah@library.com", "/images/sarah.jpg", "Sarah Knox", "#" },
-                    { 3, "Petone Campus", "maddie@library.com", "/images/maddie.jpg", "Maddie Bowles", "#" }
+                    { 1, "Porirua Campus", "judith.hall@wandw.ac.nz", "/images/judith.jpg", "Judith Hall", "https://whitireia.libguides.com/prf.php?id=c998c597-7bd7-11ed-9738-0ae0bf56cf20" },
+                    { 2, "Te Auaha Campus", "sarah.knox@wandw.ac.nz", "/images/sarah.jpg", "Sarah Knox", "https://whitireia.libguides.com/prf.php?id=c9a972af-7bd7-11ed-9738-0ae0bf56cf20" },
+                    { 3, "Petone Campus", "madeleine.bowles@wandw.ac.nz", "/images/maddie.jpg", "Maddie Bowles", "https://whitireia.libguides.com/prf.php?id=c9a970c8-7bd7-11ed-9738-0ae0bf56cf20" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Rooms",
-                columns: new[] { "ID", "Capacity", "Description", "RoomName" },
+                columns: new[] { "ID", "Capacity", "Facilities", "RoomName" },
                 values: new object[,]
                 {
-                    { 1, 10, "Description for Room A", "Room A" },
-                    { 2, 20, "Description for Room B", "Room B" },
-                    { 3, 30, "Description for Room C", "Room C" },
-                    { 4, 40, "Description for Room D", "Room D" }
+                    { 1, 5, "wifi, power, whiteboard, 5 computers, projector", "Meeting room 2 - glass slided" },
+                    { 2, 16, "wifi, power, whiteboard, 16 computers, projector", "Meeting Room 3" },
+                    { 3, 2, "wifi, power, whiteboard, 2 computers", "Meeting Room 5, Student Connection Room" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "4aae7cb3-09ea-4193-95de-76b87950d171", "fd869dd3-0dab-4750-8f5d-afe2add6bcb7" });
+                values: new object[] { "5c9ad288-9b2e-4fea-a750-e1573cab0e75", "a8acfc43-1fc0-4552-b789-4ac8e9252c82" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
