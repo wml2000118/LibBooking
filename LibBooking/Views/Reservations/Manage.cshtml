@@ -45,4 +45,21 @@
 
 @section Scripts {
     <script src="~/js/manage.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const message = '@TempData["Message"]';  // No need to serialize this.
+            const messageType = '@TempData["MessageType"]';  // No need to serialize.
+
+            // Ensure both message and messageType are not empty before showing SweetAlert
+            if (message && messageType) {
+                Swal.fire({
+                    icon: messageType === "success" ? 'success' : 'error',
+                    title: messageType === "success" ? 'Success' : 'Error',
+                    text: message,
+                    showConfirmButton: true,
+                    timer: 3000
+                });
+            }
+        });
+    </script>
 }

@@ -146,8 +146,8 @@ namespace LibBooking.Controllers
 
                 _context.Reservations.Add(reservation);
                 await _context.SaveChangesAsync();
-                //TempData["success"] = $"Booking confirmed! Room {model.Room} at {model.Time}:00 on {model.Date:yyyy-MM-dd}.";
-                TempData["Message"] = "success";
+                TempData["Message"] = $"Booking confirmed! {model.Room} at {model.Time}:00 on {model.Date:yyyy-MM-dd}.";
+                //TempData["Message"] = "success";
                 TempData["MessageType"] = "success"; // 或 "error" 根据情况设置
 
                 Console.WriteLine("Reservation saved to database.");
@@ -156,14 +156,16 @@ namespace LibBooking.Controllers
                 await _emailService.SendEmailAsync(model.Email, "Room Booking Confirmation", message);
                 Console.WriteLine("Confirmation email sent.");
 
-                ViewBag.Message = "提交成功，预订确认邮件已发送到您的邮箱。";
-                /*return View(model);*/ // 返回当前视图，并显示成功消息
-                return View("Index", new RoomReservationViewModel
-                {
-                    Date = DateTime.Today,
-                    Rooms = _context.Rooms.ToList(),
-                    Reservations = _context.Reservations.Where(r => r.ReservationDate == DateTime.Today).ToList()
-                });
+                //ViewBag.Message = "提交成功，预订确认邮件已发送到您的邮箱。";
+                ///*return View(model);*/ // 返回当前视图，并显示成功消息
+                //return View("Index", new RoomReservationViewModel
+                //{
+                //    Date = DateTime.Today,
+                //    Rooms = _context.Rooms.ToList(),
+                //    Reservations = _context.Reservations.Where(r => r.ReservationDate == DateTime.Today).ToList()
+                //});
+                // Redirect to avoid form resubmission issue
+                return RedirectToAction("Index", new { date = model.Date });
 
             }
             catch (Exception ex)
@@ -253,7 +255,9 @@ namespace LibBooking.Controllers
 
             if (id != reservation.ID)
             {
-                TempData["error"] = "Reservation not found.";
+                //TempData["error"] = "Reservation not found.";
+                TempData["Message"] = "Reservation not found.";
+                TempData["MessageType"] = "error";
                 return NotFound();
             }
 
@@ -263,14 +267,19 @@ namespace LibBooking.Controllers
                 {
                     _context.Update(reservation);
                     await _context.SaveChangesAsync();
-                    TempData["success"] = "Reservation updated successfully.";
+                    //TempData["success"] = "Reservation updated successfully.";
+                    TempData["Message"] = $"Booking updated!";
+                    //TempData["Message"] = "success";
+                    TempData["MessageType"] = "success";
                     return RedirectToAction(nameof(Manage)); // Redirect to Manage view after saving
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!_context.Reservations.Any(e => e.ID == reservation.ID))
                     {
-                        TempData["error"] = "Reservation not found.";
+                        //TempData["error"] = "Reservation not found.";
+                        TempData["Message"] = "Reservation not found.";
+                        TempData["MessageType"] = "error";
                         return NotFound();
                     }
                     else
@@ -282,7 +291,9 @@ namespace LibBooking.Controllers
 
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
             ViewBag.Errors = errors;
-            TempData["error"] = "Error updating reservation.";
+            //TempData["error"] = "Error updating reservation.";
+            TempData["Message"] = "Error updating reservation.";
+            TempData["MessageType"] = "error";
             return View(reservation);
         }
 

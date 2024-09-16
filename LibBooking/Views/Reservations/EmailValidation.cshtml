@@ -27,7 +27,7 @@
 
             <div class="form-group mb-3">
                 <label for="time" class="font-weight-bold">Time:</label>
-                @* <input type="number" id="time" name="Time" value="@Model.Time.ToString("F2")" class="form-control bg-light" readonly /> *@
+                @* <input type="number" id="time" name="Time" value="@Model.Time.ToString("F2")" class="form-control bg-light" readonly /> -- BUG to resolve here *@
                 <input type="number" id="time" name="Time" value="@Model.Time" class="form-control" readonly />
 
             </div>
@@ -54,22 +54,15 @@
         const message = @Html.Raw(JsonSerializer.Serialize(TempData["Message"]));
         const messageType = '@TempData["MessageType"]';
 
-        if (messageType) {
-            if (messageType === "success") {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    showConfirmButton: true,
-                    timer: 3000
-                });
-            } else if (messageType === "error") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    showConfirmButton: true,
-                    timer: 3000
-                });
-            }
+        // Ensure both message and messageType are not empty before showing SweetAlert
+        if (message && messageType) {
+            Swal.fire({
+                icon: messageType === "success" ? 'success' : 'error',
+                title: messageType === "success" ? 'Success' : 'Error',
+                text: message,
+                showConfirmButton: true,
+                timer: 3000
+            });
         }
     });
 </script>
