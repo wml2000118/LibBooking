@@ -227,6 +227,23 @@ namespace LibBooking.Controllers
         }
 
         // GET: Reservations/Edit/5
+        //[HttpGet("edit/{id}")]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var reservation = await _context.Reservations.FindAsync(id);
+        //    if (reservation == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(reservation);
+        //}
+
         [HttpGet("edit/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
@@ -236,12 +253,20 @@ namespace LibBooking.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservations.FindAsync(id);
+            // Fetch the reservation along with the room information
+            var reservation = await _context.Reservations
+                .Include(r => r.Room)
+                .FirstOrDefaultAsync(r => r.ID == id);
+
             if (reservation == null)
             {
                 return NotFound();
             }
-            return View(reservation);
+
+            // Pass the Room Name to the view using ViewBag
+            ViewBag.RoomName = reservation.Room.RoomName;
+
+            return View(reservation); // Pass the Reservation model to the view
         }
 
 
