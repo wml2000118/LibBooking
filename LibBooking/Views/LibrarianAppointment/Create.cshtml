@@ -16,6 +16,9 @@
     <div class="row">
         <div class="col-12 text-center">
             <h2 class="text-dark py-2">@Model.AppointmentDate.ToString("dddd, dd MMMM yyyy")</h2>
+            <div class="col-12">
+                <p class="date-text"> You can select a different date to check room availability.</p>
+            </div>
             <input type="date" id="datePicker" value="@Model.AppointmentDate.ToString("yyyy-MM-dd")" class="form-control" />
         </div>
     </div>
@@ -168,6 +171,14 @@
             }
         });
 
+                // Initialize Flatpickr for the date picker
+        flatpickr("#datePicker", {
+            dateFormat: "Y-m-d",  // Adjust format as needed
+            altInput: true,       // To show a better-looking input field
+            altFormat: "F j, Y",  // Format for the alt input
+            minDate: "today",     // Set minimum date to today
+        });
+
         // Displaying messages from TempData using SweetAlert2
         document.addEventListener("DOMContentLoaded", function () {
             const message = '@TempData["Message"]';
@@ -222,5 +233,12 @@
             color: #ffffff;
             border-radius: 5px;
         }
+
+        .date-text {
+            text-align: left;
+            color: black;
+            font-weight: bold;
+        }
+
     </style>
 }
