@@ -22,7 +22,13 @@ namespace LibBooking.Services
             email.To.Add(new MailboxAddress(toEmail, toEmail));
             email.Subject = subject;
 
-            var bodyBuilder = new BodyBuilder { HtmlBody = message };
+            // 设置邮件正文为HTML格式
+            var bodyBuilder = new BodyBuilder
+            {
+                HtmlBody = message,  // HTML 格式的邮件正文
+                TextBody = "This is the plain text version of the message." // 备用的纯文本格式
+            };
+
             email.Body = bodyBuilder.ToMessageBody();
 
             using var client = new SmtpClient();
@@ -31,5 +37,6 @@ namespace LibBooking.Services
             await client.SendAsync(email);
             await client.DisconnectAsync(true);
         }
+
     }
 }

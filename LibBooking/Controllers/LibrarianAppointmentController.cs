@@ -89,7 +89,7 @@ namespace LibBooking.Controllers
                 return BadRequest(new { message = string.Join("; ", errorMessages) });
             }
 
-            var validDomains = new[] { "@student.weltec.ac.nz", "@weltec.ac.nz" };
+            var validDomains = new[] { "@student.weltec.ac.nz", "@weltec.ac.nz", "@whitireianz.student.ac.nz" };
             var emailDomain = model.UserEmail.Substring(model.UserEmail.IndexOf("@"));
 
             if (!validDomains.Contains(emailDomain))
@@ -112,8 +112,21 @@ namespace LibBooking.Controllers
                 _context.LibrarianAppointments.Add(appointment);
                 await _context.SaveChangesAsync();
 
-                var message = $"You have successfully booked an appointment with {model.LibrarianName} at {model.StartTime} on {model.AppointmentDate:yyyy-MM-dd}.";
+                var message = $@"
+<p>Dear {model.UserEmail},</p>
+<p>We are pleased to inform you that your appointment with {model.LibrarianName} has been successfully scheduled. Below are the details of your appointment:</p>
+<ul>
+    <li><strong>Date:</strong> {model.AppointmentDate:dddd, MMMM dd, yyyy}</li>
+    <li><strong>Start Time:</strong> {model.StartTime}</li>
+    <li><strong>End Time:</strong> {model.EndTime}</li>
+</ul>
+<p>If you need to reschedule or cancel your appointment, please contact us at least 24 hours in advance.</p>
+<p>Thank you for choosing our services. We look forward to seeing you.</p>
+<p>Best regards,<br/>The Library Team</p>
+";
+
                 await _emailService.SendEmailAsync(model.UserEmail, "Appointment Confirmation", message);
+
 
                 // 返回一个指示成功的 JSON 响应
                 return Ok(new { message = "Appointment confirmed successfully!", redirectUrl = Url.Action("Create") });
@@ -176,6 +189,18 @@ namespace LibBooking.Controllers
                 return View("Edit", viewModel);
             }
 
+            // Optional: Validate if appointment already exists for the same librarian and time
+            var overlappingAppointment = await _context.LibrarianAppointments
+                .Where(a => a.LibrarianID == viewModel.LibrarianID && a.AppointmentDate == viewModel.AppointmentDate)
+                .Where(a => a.StartTime < viewModel.EndTime && a.EndTime > viewModel.StartTime && a.ID != id)
+                .FirstOrDefaultAsync();
+
+            if (overlappingAppointment != null)
+            {
+                ModelState.AddModelError("", "This time slot is already booked.");
+                return View("Edit", viewModel);
+            }
+
             var appointment = await _context.LibrarianAppointments.FindAsync(id);
             if (appointment == null)
             {
@@ -185,14 +210,17 @@ namespace LibBooking.Controllers
             appointment.LibrarianID = viewModel.LibrarianID;
             appointment.UserEmail = viewModel.UserEmail;
             appointment.AppointmentDate = viewModel.AppointmentDate;
-            appointment.StartTime = viewModel.StartTime; // Direct assignment
-            appointment.EndTime = viewModel.EndTime; // Direct assignment
+            appointment.StartTime = viewModel.StartTime;
+            appointment.EndTime = viewModel.EndTime;
             appointment.Notes = viewModel.Notes;
 
             try
             {
                 _context.Update(appointment);
                 await _context.SaveChangesAsync();
+
+                // Optional: Use TempData to pass success message
+                TempData["SuccessMessage"] = "Appointment updated successfully.";
                 return RedirectToAction("AdminDashboard");
             }
             catch (DbUpdateConcurrencyException)
@@ -203,7 +231,8 @@ namespace LibBooking.Controllers
                 }
                 else
                 {
-                    throw;
+                    ModelState.AddModelError("", "An error occurred while updating the appointment.");
+                    return View("Edit", viewModel);
                 }
             }
         }
