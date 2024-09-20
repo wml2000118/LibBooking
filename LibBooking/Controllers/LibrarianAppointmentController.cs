@@ -381,5 +381,33 @@ namespace LibBooking.Controllers
                 .ToListAsync();
             return View(appointments);
         }
+
+        #region API CALLS
+
+        [HttpGet("get-all-appointments")]
+        public IActionResult GetAllAppointments()
+        {
+            var appointmentList = _context.LibrarianAppointments
+                .Include(a => a.Librarian)  // Assuming LibrarianAppointment has a Librarian relation
+                .ToList();
+            return Json(new { data = appointmentList });
+        }
+
+        [HttpDelete("delete-appointment/{id}")]
+        public IActionResult DeleteAppointment(int id)
+        {
+            var appointment = _context.LibrarianAppointments.FirstOrDefault(a => a.ID == id);
+            if (appointment == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+
+            _context.LibrarianAppointments.Remove(appointment);
+            _context.SaveChanges();
+            return Json(new { success = true, message = "Delete successful" });
+        }
+
+        #endregion
+
     }
 }

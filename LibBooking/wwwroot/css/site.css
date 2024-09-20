@@ -92,6 +92,15 @@ table {
     border-collapse: collapse; /* Neat border styling */
 }
 
+#adminDashboardTable {
+    margin-bottom: 60px; /* Adjust based on footer height */
+    width: 100%; /* Full width without overflow */
+    max-width: 1200px; /* Set a comfortable max width for readability */
+    margin-left: auto;
+    margin-right: auto; /* Center the table on the page */
+    border-collapse: collapse; /* Neat border styling */
+}
+
 /*table th, table td {
     padding: 10px;
     text-align: center;*/  /*Align text for better readability */
