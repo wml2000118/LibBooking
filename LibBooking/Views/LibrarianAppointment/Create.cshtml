@@ -39,7 +39,11 @@
                     @foreach (var librarian in Model.Librarians)
                     {
                         <tr>
-                            <td data-librarian-name="@librarian.Name">@librarian.Name<br /><small>@librarian.Campus</small></td>
+                            <td data-librarian-name="@librarian.Name">
+                                <strong>@librarian.Name</strong>
+                                <br />
+                                @librarian.Campus
+                            </td>
                             @for (var hour = 8; hour < 18; hour++)
                             {
                                 var appointment = Model.Appointments.FirstOrDefault(a => a.LibrarianID == librarian.ID && a.StartTime.Hours == hour);
@@ -61,7 +65,7 @@
 
     <!-- 添加 Notes 输入框 -->
     <div class="form-group mt-3">
-        <label for="inquiryType">Your Inquiry/Notes:</label>
+        <label for="inquiryType"><strong>Your Inquiry/Notes:</strong></label>
         <select id="inquiryType" name="InquiryType" class="form-control" required>
             <option value="" disabled selected hidden>Select inquiry type</option>
             <option value="Referencing">Referencing</option>

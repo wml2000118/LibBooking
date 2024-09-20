@@ -6,7 +6,17 @@
 
 <h1>Edit Appointment</h1>
 
-<div class="alert alert-danger" id="error-message" style="display: none;"></div>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
 
 <form asp-action="UpdateAppointment" asp-route-id="@Model.ID" method="post">
     <div class="form-group">
@@ -42,13 +52,29 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
+               .then(response => response.json().then(data => {
+                   if (!response.ok) {
+                       throw new Error(data.message || 'Failed to update appointment.');
+                   }
+                   window.location.href = '/api/LibrarianAppointment/admindashboard';
+               }))
+            .catch(error => {
+                console.error('Error updating appointment:', error);
+                showError(error.message);
+            });
+
+        function showError(message) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.innerText = message;
+            errorMessage.style.display = 'block';
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
-            // Initialize Flatpickr for time selection
             flatpickr(".timepicker", {
                 enableTime: true,
                 noCalendar: true,
                 dateFormat: "H:i",
-                time_24hr: false // Set to false for 12-hour format, true for 24-hour format
+                time_24hr: false
             });
         });
     </script>

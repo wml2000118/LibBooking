@@ -152,8 +152,27 @@ namespace LibBooking.Controllers
 
                 Console.WriteLine("Reservation saved to database.");
 
-                var message = $"You have successfully booked the room {model.Room} at {model.Time}:00 on {model.Date:yyyy-MM-dd}.";
+                var message = $@"
+<p>Dear {model.Email},</p>
+
+<p>We are pleased to confirm that you have successfully booked the room <strong>{model.Room}</strong> on <strong>{model.Date:dddd, MMMM dd, yyyy}</strong> at <strong>{model.Time}:00</strong>.</p>
+
+<p><strong>Room:</strong> {model.Room}<br>
+<strong>Date:</strong> {model.Date:dddd, MMMM dd, yyyy}<br>
+<strong>Time:</strong> {model.Time}:00</p>
+
+<p>If you need to cancel or modify your booking, please do so at least 24 hours before the reserved time.</p>
+
+<p>Thank you for using our booking service. We look forward to serving you.</p>
+
+<p>Best regards,<br>
+The Library Team</p>";
+
+                // 发送HTML格式的邮件
                 await _emailService.SendEmailAsync(model.Email, "Room Booking Confirmation", message);
+
+
+
                 Console.WriteLine("Confirmation email sent.");
 
                 //ViewBag.Message = "提交成功，预订确认邮件已发送到您的邮箱。";
@@ -269,7 +288,6 @@ namespace LibBooking.Controllers
             return View(reservation); // Pass the Reservation model to the view
         }
 
-
         // POST: Reservations/Edit/5
         [HttpPost("edit/{id}")]
         [Authorize(Roles = "Admin")]
@@ -284,6 +302,21 @@ namespace LibBooking.Controllers
                 TempData["Message"] = "Reservation not found.";
                 TempData["MessageType"] = "error";
                 return NotFound();
+            }
+
+            // Check for overlapping reservations
+            var conflictingReservation = await _context.Reservations
+                .Where(r => r.RoomID == reservation.RoomID
+                            && r.ID != reservation.ID
+                            && r.ReservationDate == reservation.ReservationDate
+                            && ((reservation.StartTime >= r.StartTime && reservation.StartTime < r.EndTime)
+                            || (reservation.EndTime > r.StartTime && reservation.EndTime <= r.EndTime)))
+                .FirstOrDefaultAsync();
+
+            if (conflictingReservation != null)
+            {
+                TempData["error"] = "The selected time conflicts with another reservation.";
+                return View(reservation);
             }
 
             if (ModelState.IsValid)
@@ -321,6 +354,7 @@ namespace LibBooking.Controllers
             TempData["MessageType"] = "error";
             return View(reservation);
         }
+
 
         // GET: Reservations/Delete/5
         [HttpGet("delete/{id}")]
