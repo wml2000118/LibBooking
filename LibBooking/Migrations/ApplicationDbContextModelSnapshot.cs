@@ -251,7 +251,7 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d8949af0-a173-4241-9706-e3bf205b5817",
+                            Id = "1fb98168-0400-4d3f-881b-4a828b690a2c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -349,17 +349,17 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0ccf2492-b644-43c5-93ec-637d63b98ca0",
+                            Id = "930df14f-7510-4038-8931-5b01e850a6c0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b7ed9b78-a171-4eb1-91b2-01f441d24cbb",
+                            ConcurrencyStamp = "9a728ef7-65ef-45db-86c4-dbdc4bf05fd1",
                             Email = "admin@library.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LIBRARY.COM",
                             NormalizedUserName = "ADMIN@LIBRARY.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFPcOqpJjCYYuUPIwE2jI+Pq3PunIB45SvPrlZM0uX5kxH9JQGDFtOpJIf/pKwwJLg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFEt19eO0eotkSkuH6IjrERmPdkU5EfK87DqN3VMCc2RyWmY6Kf+rAHmpQ3ScCw36Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bb06d4d8-c79a-4e2b-a75c-3a0d270c171e",
+                            SecurityStamp = "3653d204-968d-42d3-af75-1b37379fdd64",
                             TwoFactorEnabled = false,
                             UserName = "admin@library.com"
                         });
@@ -431,8 +431,8 @@ namespace LibBooking.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "0ccf2492-b644-43c5-93ec-637d63b98ca0",
-                            RoleId = "d8949af0-a173-4241-9706-e3bf205b5817"
+                            UserId = "930df14f-7510-4038-8931-5b01e850a6c0",
+                            RoleId = "1fb98168-0400-4d3f-881b-4a828b690a2c"
                         });
                 });
 
